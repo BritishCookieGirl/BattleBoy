@@ -1,0 +1,185 @@
+Make your edits with your own color font:
+Rob
+Eric
+Abby
+Sam
+
+Meeting Times:
+Thursday 9PM & Tuesday 9PM & Sunday 7PM
+
+
+GAME MECHANICS
+Primary Mechanic: Fixed-axis PvE-style fighting game
+Game contains 1 level that is identical on all iterations.
+Player moves (controls undefined) from one edge of the screen to the other edge, which acts as the "goal."
+(5) enemies (club's bouncers) act as inhibitors to the player's progress.
+DISCUSSION POINT: How do they block the player? constantly move towards him (easier)? or actually attacking the player (harder)?
+If they attack the player the player must have a health status, which introduces a "lose" condition that would not grant the player any points.
+Player strings together attack combos (controls undefined) to defeat the bouncers in increasingly flamboyant ways.
+DISCUSSION POINT: What control scheme do we want? WASD+others with mouse for menu interaction?  
+DISCUSSION POINT: What kind of attack types do we want to include? Light/Heavy? Lift/Crush?
+DISCUSSION POINT: Do special moves have their own button/buttons or are they activated through specific attack-type combos?
+Player has the option of just jumping over the guards, but gaining very little points for this. (May be useful for first couple levels?)
+Secret areas of the level are only accessible through specific actions or unlocked abilities.
+Secondary Mechanic: Additional content is unlocked through consecutive plays.
+Player gains points through use of increasingly advanced abilities and the player's own skill.
+Points can be used at the end of each "level" to buy new/more effective abilities.
+DISCUSSION POINT: We need to work out a full list of unlocks.
+Player begins with only the ability to strike (once) at a time and single-jump.
+Balancing unlock progression is going to be critically important, players should never feel as if the next unlock would require them to "grind."
+DISCUSSION POINT: Should unlocks be in non-restrictive trees (you can jump between trees without prerequisites) or restrictive ones?  Either way we need to think of at least two trees of unlocks that have different effects.
+
+
+
+
+
+DEVELOPMENT TASKS
+ (Not yet broken down into milestones)
+Create main level
+Player Spawn Point
+Enemy spawn point
+“Exit” zone
+Triggers to cause level to end and game state to change.
+Player
+Basic movement controls
+Includes single-jump
+WASD?
+Advanced movement controls
+double and triple jump
+combat controls (specifics undecided)
+special moves
+Health (if we choose to implement it)
+Animations
+movement
+combat
+Enemies
+Basic AI
+Health
+Visual indicator?
+Death despawn
+Spawn at level load
+Weapons?
+Animations
+movement
+combat
+Combat
+Hit detection
+Point accumulation
+Enable variable multipliers
+Display current score and multiplier on screen
+Special abilities
+animations
+multiplier modifiers
+
+
+MAIN DEVELOPMENT AREAS
+Assets (Models/Textures/Audio)
+Enemy AI
+Unlockable System
+Player Input (Movement & Combat)
+Game Progression (Menus and Loops)
+
+
+
+MILESTONE 1: 
+Something Playable
+Basic Level
+Placeholder surface to walk on
+Placeholder “Exit” zone
+Player spawn point
+“Exit” trigger
+Player
+Placeholder model
+Spawn functionality
+Basic input controls
+Left-Right + single jump
+Enemies (no AI)
+Placeholder models
+Spawn functionality
+
+
+MILESTONE 2: 
+Something Functional
+Fewer placeholders, more in-progress models.
+Player
+Double/Triple-jump with unlock flag.
+Defaulted to unlocked for now
+Implement this in such a way that the “unlock” functionality is modular as possible so it can be reused for other unlocks.
+Basic combat controls
+Light/heavy attack or whatever we decide on.
+Combo length limiter.
+Starts at 1, will use same unlock system.
+Enemies (no AI)
+Health with placeholder indicator
+Death despawn
+Combat (no physics)
+Hit detection
+Score accumulation
+Initial variable multipliers implementation
+placeholder indicator
+Damage based on attack type
+
+
+MILESTONE 3: 
+Something That Looks Like A Game
+More in-progress models, some final models
+Menu Navigation placeholders
+Title, How-To, Main level, Level Completion, Unlocks (no loop yet).
+Player
+Special move activation (trigger undecided)
+Enemies
+Basic AI
+Combat
+Add variable force to attacks.
+Special move functionalities
+Animations
+Around ? - ½ of animations completed and implemented.
+
+
+MILESTONE 4: 
+Something That Talks Like A Game
+More final models than unfinished models
+Menu Navigation
+Fewer placeholders than finished items.
+Level -> Completion -> Unlock.
+Make loop functional
+Implement final victory condition and final victory screen.
+Audio!
+Sound Effects
+Background Music
+Special Effects!
+Particle effects on all the things.
+Animations
+Most animations completed and implemented.
+Unlockables
+Unlocks implementation completed.
+
+
+MILESTONE 5: 
+It’s Probably A Game
+Final Touches.
+Balance unlock progression.
+All assets should be finalized and implemented.
+
+
+
+ASSET LIST
+Models
+Player Character
+Enemy 1
+Enemy 2
+a
+Animations
+Player Character
+Walk Cycle
+“Idle” Stance?
+Run Cycle
+Jump
+Ground Attack (First, Default Attack)
+Taking a Hit
+“Death”
+
+Sound Effects
+a
+Background Music
+a
