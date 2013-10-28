@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelExit : MonoBehaviour {
-
+public class Player : MonoBehaviour {
+	
+	public GameManager gm;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -10,12 +12,9 @@ public class LevelExit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
-	
-	void OnTriggerEnter(Collider other) {
-		if (other.name == "Player") {
-			GameEventManager.TriggerLevelComplete();
+		if (Input.GetButtonDown("Fire1")) {
+			gm.updateCombo(1);
+			gm.updateScore(100);
 		}
 	}
 	
