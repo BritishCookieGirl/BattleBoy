@@ -23,6 +23,18 @@ public class CharacterController2D : MonoBehaviour
     private Vector3 activeGlobalPlatformPoint;
     private Vector3 lastPlatformVelocity;
 
+    // The movement speed modifier (set externally)
+    private float speedModifier = 1.0f;
+    public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
+
+    // Is Double-Jump Unlocked?
+    private bool doubleJumpEnabled;
+    public bool DoubleJumpEnabled { get { return doubleJumpEnabled; } set { doubleJumpEnabled = value; } }
+
+    // Is Triple-Jump Unlocked?
+    private bool tripleJumpEnabled;
+    public bool TripleJumpEnabled { get { return tripleJumpEnabled; } set { tripleJumpEnabled = value; } }
+
     // This is used to keep track of special effects in UpdateEffects ();
     private bool areEmittersOn = false;
 
@@ -31,6 +43,11 @@ public class CharacterController2D : MonoBehaviour
         movement.direction = transform.TransformDirection(Vector3.forward);
         controller = GetComponent<CharacterController>();// GetComponent(CharacterController);
         Spawn();
+
+        // FOR TESTING ONLY
+        DoubleJumpEnabled = true;
+        TripleJumpEnabled = true;
+        // END TESTING
     }
 
     void Spawn()
@@ -75,7 +92,7 @@ public class CharacterController2D : MonoBehaviour
             else
                 targetSpeed *= movement.walkSpeed;
 
-            movement.speed = Mathf.Lerp(movement.speed, targetSpeed, curSmooth);
+            movement.speed = Mathf.Lerp(movement.speed, targetSpeed * SpeedModifier, curSmooth);
 
             movement.hangTime = 0.0f;
         }
@@ -131,22 +148,43 @@ public class CharacterController2D : MonoBehaviour
 
         // if we are jumping and we press jump button, we do a double jump or
         // if we are falling, we can do a double jump to
-        if ((jump.jumping && Input.GetButtonUp("Jump") && !jump.doubleJumping) || (!controller.isGrounded && !jump.jumping && !jump.doubleJumping && movement.verticalSpeed < -12.0f))
+        if (DoubleJumpEnabled &&
+            (IsJumping() && Input.GetButtonUp("Jump") && !IsDoubleJumping()) ||
+            (!controller.isGrounded && !IsJumping() && !IsDoubleJumping() && !IsTripleJumping() && movement.verticalSpeed < -12.0f))
         {
             jump.canDoubleJump = true;
         }
 
+        // if we are jumping and we press jump button, we do a double jump or
+        // if we are falling, we can do a double jump to
+        if ((DoubleJumpEnabled && TripleJumpEnabled) &&
+            (IsJumping() && Input.GetButtonUp("Jump") && IsDoubleJumping() && !IsTripleJumping()) ||
+            (!controller.isGrounded && IsJumping() && IsDoubleJumping() && !IsTripleJumping() && movement.verticalSpeed < -12.0f))
+        {
+            jump.canTripleJump = true;
+        }
+
         // if we can do a double jump, and we press the jump button, we do a double jump
-        if (jump.canDoubleJump && Input.GetButtonDown("Jump") && !IsTouchingCeiling())
+        if (canDoubleJump() && Input.GetButtonDown("Jump") && !IsTouchingCeiling())
         {
             jump.doubleJumping = true;
             movement.verticalSpeed = CalculateJumpVerticalSpeed(jump.doubleJumpHeight);
             jump.canDoubleJump = false;
 
         }
+
+        // if we can do a triple jump, and we press the jump button, we do a triple jump
+        if (canTripleJump() && IsDoubleJumping() && Input.GetButtonDown("Jump") && !IsTouchingCeiling())
+        {
+            jump.tripleJumping = true;
+            movement.verticalSpeed = CalculateJumpVerticalSpeed(jump.doubleJumpHeight);
+            jump.canTripleJump = false;
+        }
+
         // * When jumping up we don't apply gravity for some time when the user is holding the jump button
         //   This gives more control over jump height by pressing the button longer
-        bool extraPowerJump = jump.jumping && !jump.doubleJumping && movement.verticalSpeed > 0.0f && jumpButton && transform.position.y < jump.lastStartHeight + jump.extraHeight && !IsTouchingCeiling();
+        bool extraPowerJump = IsJumping() && !IsDoubleJumping() && !IsTripleJumping() && movement.verticalSpeed > 0.0f &&
+            jumpButton && transform.position.y < jump.lastStartHeight + jump.extraHeight && !IsTouchingCeiling();
 
         if (extraPowerJump)
             return;
@@ -154,6 +192,7 @@ public class CharacterController2D : MonoBehaviour
         {
             movement.verticalSpeed = -movement.gravity * Time.deltaTime;
             jump.canDoubleJump = false;
+            jump.canTripleJump = false;
         }
         else
             movement.verticalSpeed -= movement.gravity * Time.deltaTime;
@@ -228,7 +267,7 @@ public class CharacterController2D : MonoBehaviour
         Vector3 lastPosition = transform.position;
 
         // Calculate actual motion
-        Vector3 currentMovementOffset = movement.direction * movement.speed + new Vector3(0, movement.verticalSpeed, 0) + movement.inAirVelocity;
+        Vector3 currentMovementOffset = movement.direction * speedModifier * movement.speed + new Vector3(0, movement.verticalSpeed, 0) + movement.inAirVelocity;
 
         // We always want the movement to be framerate independent.  Multiplying by Time.deltaTime does this.
         currentMovementOffset *= Time.deltaTime;
@@ -259,7 +298,9 @@ public class CharacterController2D : MonoBehaviour
             {
                 jump.jumping = false;
                 jump.doubleJumping = false;
+                jump.tripleJumping = false;
                 jump.canDoubleJump = false;
+                jump.canTripleJump = false;
                 SendMessage("DidLand", SendMessageOptions.DontRequireReceiver);
 
                 Vector3 jumpMoveDirection = movement.direction * movement.speed + movement.inAirVelocity;
@@ -284,6 +325,8 @@ public class CharacterController2D : MonoBehaviour
             activePlatform = hit.collider.transform;
         }
     }
+
+    #region Helper Methods
 
     // Various helper functions below:
     float GetSpeed()
@@ -311,9 +354,19 @@ public class CharacterController2D : MonoBehaviour
         return jump.doubleJumping;
     }
 
+    bool IsTripleJumping()
+    {
+        return jump.tripleJumping;
+    }
+
     bool canDoubleJump()
     {
         return jump.canDoubleJump;
+    }
+
+    bool canTripleJump()
+    {
+        return jump.canTripleJump;
     }
 
     bool IsTouchingCeiling()
@@ -340,6 +393,8 @@ public class CharacterController2D : MonoBehaviour
     {
         canControl = controllable;
     }
+
+    #endregion
 
     // Require a character controller to be attached to the same game object
     //@script RequireComponent(CharacterController);
@@ -413,7 +468,8 @@ public class PlatformerControllerJumping
     // We add extraHeight units (meters) on top when holding the button down longer while jumping
     public float extraHeight = 4.1f;
 
-    public float doubleJumpHeight = 2.1f;
+    public float doubleJumpHeight = 2.5f;
+    public float tripleJumpHeight = 2.5f;
 
     // This prevents inordinarily too quick jumping
     // The next line, @System.NonSerialized , tells Unity to not serialize the variable or show it in the inspector view.  Very handy for organization!
@@ -428,13 +484,21 @@ public class PlatformerControllerJumping
     [System.NonSerialized]
     public bool jumping = false;
 
-    // Are where double jumping? ( Initiated when jumping or falling after pressing the jump button )
+    // Are we double jumping? ( Initiated when jumping or falling after pressing the jump button )
     [System.NonSerialized]
     public bool doubleJumping = false;
+
+    // Are we triple jumping? ( Initiated when jumping or falling after pressing the jump button after a double jump)
+    [System.NonSerialized]
+    public bool tripleJumping = false;
 
     // Can we make a double jump ( we can't make two double jump or more at the same jump )
     [System.NonSerialized]
     public bool canDoubleJump = false;
+
+    // Can we make a triple jump?
+    [System.NonSerialized]
+    public bool canTripleJump = false;
 
     [System.NonSerialized]
     public bool reachedApex = false;
