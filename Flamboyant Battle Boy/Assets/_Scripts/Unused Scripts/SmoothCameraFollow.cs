@@ -20,6 +20,7 @@ public class SmoothCameraFollow : MonoBehaviour
 
     //Time when the movement started
     private float startTime;
+    private float elapsedTime;
 
     //Total distance between the markers
     private float journeyLength;
@@ -37,8 +38,9 @@ public class SmoothCameraFollow : MonoBehaviour
 
         //Keep a note of the time the movement started.
         startTime = Time.time;
+        //elapsedTime = 0;
 
-        startPoint = transform.position;
+        //startPoint = transform.position;
         endPoint = new Vector3(target.position.x, target.position.y, -target.position.z) + cameraOffset;
 
         //Calculates the journey length;
