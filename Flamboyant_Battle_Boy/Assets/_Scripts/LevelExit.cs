@@ -13,6 +13,7 @@ public class LevelExit : MonoBehaviour {
 	
 	}
 	
+	// Triggers level end when entered by Player
 	void OnTriggerEnter(Collider other) {
 		if (other.name == "Player") {
 			GameEventManager.TriggerLevelComplete();

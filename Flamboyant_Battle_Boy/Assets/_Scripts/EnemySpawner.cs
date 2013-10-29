@@ -4,45 +4,57 @@ using System.Collections;
 public class EnemySpawner : MonoBehaviour {
 	
 	public Transform enemy;
-	public bool shouldSpawn = true;
+	
 	public float spawnRate = 5.0f;
 	public int maxSpawn = 1;
 	public static int currentEnemies = 0;
 	
+	private bool canSpawn = true;
 	private float nextSpawn = 0.0f;
-
+	
+	
+	// Called before Start
+	void Awake() {
+		GameEventManager.LevelStart += LevelStart;
+		GameEventManager.LevelComplete += LevelComplete;		
+	}
 	// Use this for initialization
 	void Start () {
-		GameEventManager.LevelComplete += levelComplete;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Time.time > nextSpawn && shouldSpawn) {
+		
+		if (GameManager.currentTime > nextSpawn && canSpawn) {
 			
 			Spawn();
+		
 			if (currentEnemies >= maxSpawn) {
-				shouldSpawn = false;
+				canSpawn = false;
 			}
 		}
 		
-		if (currentEnemies < maxSpawn && shouldSpawn == false) {
-			shouldSpawn = true;
-			nextSpawn = (Time.time + spawnRate);
-			print ("current time is " + Time.time + "next spawn at " + nextSpawn);
+		if (currentEnemies < maxSpawn && canSpawn == false) {
+			canSpawn = true;
+			nextSpawn = (GameManager.currentTime + spawnRate);
 		}
-		
-
 	}
 	
+	//Spawn new enemy from prefab
 	public void Spawn() {
-			print ("spawning new enemy");
 			Instantiate(enemy,transform.position, transform.rotation);         
 			currentEnemies++;
 	}
 	
-	private void levelComplete() {
-		shouldSpawn = false;	
+	// Called Automatically anytime level starts - set default variables here
+	private void LevelStart() {
+		canSpawn = true;	
+	}
+	
+	// Called automatically anytime level finishes - set win/lose conditions here
+	private void LevelComplete() {
+		canSpawn = false;	
 	}
 	
 }

@@ -4,14 +4,14 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 	
 	public GUIText comboText, scoreText, timerText, comboCounter;
-	public Timer timer;
+	public GameManager gm;
 	
 	void Awake() {
 		GameEventManager.LevelStart += LevelStart;
 		GameEventManager.LevelComplete += LevelComplete;
-		GameManager.ComboChanged += UpdateCombo;
-		GameManager.ScoreChanged += UpdateScore;
-		
+		GameManager.ComboChanged += DisplayCombo;
+		GameManager.ScoreChanged += DisplayScore;	
+		GameManager.TimeChanged +=  DisplayTime;
 	}
 	
 	// Use this for initialization
@@ -21,23 +21,32 @@ public class GUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		double displayTime = System.Math.Round(timer.remainingTime,2);
-		timerText.text = displayTime.ToString("0.00");
+		
 	}
 	
+	// Called Automatically anytime level starts - set default variables here
 	private void LevelStart() {
 
 	}
 	
+	// Called automatically anytime level finishes - set win/lose conditions here
 	private void LevelComplete() {
 		
 	}
 	
-	private void UpdateCombo(int points) {
+	// Called automatically anytime combo changes - updates combo GUI text
+	private void DisplayCombo(int points) {
 		comboCounter.text = new string('*',points);
 	}
 	
-	private void UpdateScore(int points) {
+	// Called automatically anytime score changes - updates score GUI text
+	private void DisplayScore(int points) {
 		scoreText.text = points.ToString();	
+	}
+	
+	// Called automatically anytime time changes - updates time GUI text
+	private void DisplayTime(float time) {
+		double displayTime = System.Math.Round(time,2);
+		timerText.text = displayTime.ToString("0.00");
 	}
 }
