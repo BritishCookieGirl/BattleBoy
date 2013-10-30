@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
 	}
 
 	// Use by external objects to apply damage to enemy instance
-	public int TakeDamage (int attackStrength)
+	private int TakeDamage (int attackStrength)
 	{
 		int damageTaken = attackStrength - defense;
 		health -= damageTaken;
@@ -56,6 +56,12 @@ public class Enemy : MonoBehaviour
 		}
 		return damageTaken;
 	}
+
+    public void ReceiveDamage(string attackType, int attackStrength)
+    {
+        int damage = TakeDamage(attackStrength);
+        //Send damage value off to score accumulator
+    }
 
 	// Called before object death - use to tidy lose ends
 	private void OnDestroy ()
