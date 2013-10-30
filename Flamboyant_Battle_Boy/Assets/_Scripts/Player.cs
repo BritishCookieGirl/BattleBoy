@@ -3,9 +3,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 	
-	//SIMPLE TEST CODE TO GET DAMAGE WORKING ON ENEMIES PROBABLY GOING TO SCRAPE ALL OF THIS
+	//SIMPLE TEST CODE TO GET DAMAGE WORKING ON ENEMIES PROBABLY GOING TO SCRAP ALL OF THIS
 	
-	public GameManager gm;
 	private int attackStrength = 20;
 	
 	// Use this for initialization
@@ -21,8 +20,8 @@ public class Player : MonoBehaviour {
 	public void Attack(Enemy enemy) {
 		int damage = enemy.TakeDamage(attackStrength);
 		if (damage > 0) {
-			gm.UpdateScore(damage * 10);
-			gm.UpdateCombo(-1);
+			ScoreManager.UpdateScore(damage * 10);
+			ComboManager.UpdateCombo(1);
 		}
 	}
 	

@@ -15,8 +15,8 @@ public class EnemySpawner : MonoBehaviour {
 	
 	// Called before Start
 	void Awake() {
-		GameEventManager.LevelStart += LevelStart;
-		GameEventManager.LevelComplete += LevelComplete;		
+		GameManager.LevelStart += LevelStart;
+		GameManager.LevelComplete += LevelComplete;		
 	}
 	// Use this for initialization
 	void Start () {

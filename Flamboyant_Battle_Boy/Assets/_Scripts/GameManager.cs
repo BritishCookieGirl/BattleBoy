@@ -1,116 +1,91 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
-	
-	//MERGED TIMER INTO THIS CLASS, MIGHT MOVE IT BACK OUT, MIGHT BREAK OFF POINT,COMBO,SCORE MANAGEMENT TO SEPARATE MANAGEMENT OBJECTS
-	
-	public float bonusTime, comboTime;
-	public static float currentTime;
-	public int currentCombo, maxCombo, score;
-	
-	private float startTime, endTime, remainingTime, comboStart;
-	private bool firstAttack;
-	
-	
+public class GameManager : MonoBehaviour
+{
+
+	//MERGED TIMER INTO THIS CLASS, MIGHT MOVE IT BACK OUT, 
+	//Did BREAK OFF COMBO/SCORE MANAGEMENT TO SEPARATE MANAGEMENT OBJECTS
+
+	public float bonusTime;
+	public static float currentTime, remainingTime;
+	private static float startTime, endTime;
+
 	//Event Declarations
-	public delegate void PointEventHandler(int points);
-	public static event PointEventHandler ScoreChanged, ComboChanged;
-	
-	public delegate void TimeEventHandler(float time);
+
+	public delegate void TimeEventHandler (float time);
 	public static event TimeEventHandler TimeChanged;
 	
-	//End Events Declarations
-	
-	void Awake() {
-		GameEventManager.LevelStart += LevelStart;
-		GameEventManager.LevelComplete += LevelComplete;		
-	}
-	
-	// Use this for initialization
-	void Start () {
-		GameEventManager.TriggerLevelStart();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		UpdateTime(Time.time);
-	}
-	
-	// Calculates score and raises event after score changes
-	public void UpdateScore (int points) {
-		int multiplier = maxCombo - currentCombo;
-		score += (points * (multiplier + 1));
+	public delegate void GameEvent();
+	public static event GameEvent LevelStart, LevelComplete;
 
-		if (ScoreChanged != null) {
-			ScoreChanged(score);	
-		}
+	//End Events Declarations
+
+	void Awake ()
+	{
+
 	}
-	
-	// Calculates combo and raises event after combo changes
-	public void UpdateCombo (int points) {
-		if (firstAttack) {
-			comboStart = Time.time;	
-			firstAttack = false;
-		} 
-		
-		currentCombo = Mathf.Clamp((currentCombo+points),0,maxCombo);
-		if (ComboChanged != null) {
-			ComboChanged(currentCombo);	
-		}
+
+	// Use this for initialization
+	void Start ()
+	{
+		GameEventManager.TriggerLevelStart ();
 	}
-	
+
+	// Update is called once per frame
+	void Update ()
+	{
+		UpdateTime (Time.time);
+	}
+
+
 	// Calculates time and raises event after combo changes
-	public void UpdateTime(float time) {
-		
+	public void UpdateTime (float time)
+	{
+
 		currentTime = time;
 		remainingTime = bonusTime - currentTime;
-		
-		// Check if combo entry time has expired
-		if (currentTime > (comboStart + comboTime)){
-			ResetCombo();	
-		}
-		
+
 		// Check for remaining time in level
 		if (remainingTime < 0) {
-			GameEventManager.TriggerLevelComplete();
+			TriggerLevelComplete ();
 		}
-		
+
 		// Fire time event with current time
 		if (TimeChanged != null) {
-			TimeChanged(remainingTime);	
+			TimeChanged (remainingTime);
 		}
 	}
 	
-	// Called Automatically anytime level starts - set default variables here
-	private void LevelStart() {
+	public static void TriggerLevelStart() {
+		
 		startTime = Time.time;
-		ResetScore();
-		ResetCombo();	
+		
+		if (LevelStart != null) {
+			LevelStart();	
+		}
 	}
 	
-	// Called automatically anytime level finishes - set win/lose conditions here
-	private void LevelComplete() {
+		// Use to notify subscribed objects that level has finished
+	public static void TriggerLevelComplete() {
+		
 		endTime = Time.time;
-		CalculateFinalScore();
+		
+		if (LevelComplete != null) {
+			LevelComplete();	
+		}
 	}
-	
-	// Manually reset score 
-	public void ResetScore() {
-		UpdateScore (0);	
-	}
-	
-	// Manually reset combo
-	public void ResetCombo() {
-		currentCombo = maxCombo;
-		UpdateCombo(currentCombo);
-		firstAttack = true;
-	}
-	
-	// Calculations for end of game bonus points
-	public void CalculateFinalScore() {
-		ResetCombo();
-		int timeBonus = (int)remainingTime * 100;
-		UpdateScore(timeBonus);
-	}
+
+//	// Called Automatically anytime level starts - set default variables here
+//	private void LevelStart ()
+//	{
+//		startTime = Time.time;
+//	}
+//
+//	// Called automatically anytime level finishes - set win/lose conditions here
+//	private void LevelComplete ()
+//	{
+//		endTime = Time.time;
+//	}
+
 }

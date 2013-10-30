@@ -4,13 +4,12 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 	
 	public GUIText comboText, scoreText, timerText, comboCounter;
-	public GameManager gm;
 	
 	void Awake() {
-		GameEventManager.LevelStart += LevelStart;
-		GameEventManager.LevelComplete += LevelComplete;
-		GameManager.ComboChanged += DisplayCombo;
-		GameManager.ScoreChanged += DisplayScore;	
+		GameManager.LevelStart += LevelStart;
+		GameManager.LevelComplete += LevelComplete;
+		ComboManager.ComboChanged += DisplayCombo;
+		ScoreManager.ScoreChanged += DisplayScore;	
 		GameManager.TimeChanged +=  DisplayTime;
 	}
 	
@@ -36,6 +35,7 @@ public class GUIManager : MonoBehaviour {
 	
 	// Called automatically anytime combo changes - updates combo GUI text
 	private void DisplayCombo(int points) {
+		print ("combo is " + points);
 		comboCounter.text = new string('*',points);
 	}
 	
