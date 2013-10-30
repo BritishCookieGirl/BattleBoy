@@ -5,6 +5,7 @@ public class EnemySpawner : MonoBehaviour {
 	
 	public Transform enemy;
 	
+	
 	public float spawnRate = 5.0f;
 	public int maxSpawn = 1;
 	public static int currentEnemies = 0;

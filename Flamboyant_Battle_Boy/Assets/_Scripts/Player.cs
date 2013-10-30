@@ -18,11 +18,8 @@ public class Player : MonoBehaviour {
 	}
 	
 	public void Attack(Enemy enemy) {
-		int damage = enemy.TakeDamage(attackStrength);
-		if (damage > 0) {
-			ScoreManager.UpdateScore(damage * 10);
-			ComboManager.UpdateCombo(1);
-		}
+		enemy.TakeDamage(attackStrength);
+		ComboManager.UpdateCombo(1);
 	}
 	
 	private void OnTriggerStay(Collider other) {

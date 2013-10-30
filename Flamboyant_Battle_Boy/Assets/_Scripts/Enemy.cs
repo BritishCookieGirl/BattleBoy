@@ -7,7 +7,10 @@ public class Enemy : MonoBehaviour {
 	public bool canMove = true;
 	public int health = 100;
 	public int defense = 0;
+	public int pointValue = 100;
 	
+//	public delegate void DamageEventHandler(int points);
+//	public static event DamageEventHandler TookDamage;
 	
 	// Called before Start
 	void Awake() {
@@ -40,19 +43,21 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	// Use by external objects to apply damage to enemy instance
-	public int TakeDamage(int attackStrength) {
+	public void TakeDamage(int attackStrength) {
 		int damageTaken = attackStrength - defense;
 		health -= damageTaken;
 		if (health <= 0) {
-			print ("Enemy defeated");
-			Destroy(gameObject, 1);	
+			Destroy(gameObject);	
 		}
-		return damageTaken;	
+		
+		ScoreManager.UpdateScore(damageTaken);
+
 	}
 	
 	// Called before object death - use to tidy lose ends
 	private void OnDestroy() {
 		EnemySpawner.currentEnemies--;
+		ScoreManager.UpdateScore(pointValue);
 	}
 	
 	
