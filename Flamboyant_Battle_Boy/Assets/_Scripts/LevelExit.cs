@@ -13,15 +13,11 @@ public class LevelExit : MonoBehaviour {
 	
 	}
 	
+	// Triggers level end when entered by Player
 	void OnTriggerEnter(Collider other) {
 		if (other.name == "Player") {
-			other.gameObject.GetComponent<CharacterController2D>().canControl = false;
-			EndLevel();	
+			GameEventManager.TriggerLevelComplete();
 		}
 	}
 	
-	void EndLevel() {
-		print ("Level Complete!!!");
-		Time.timeScale = 0.0f;
-	}
 }

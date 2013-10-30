@@ -1,33 +1,37 @@
-+# =============== #
-+# Unity generated #
-+# =============== #
-+Temp/
-+Obj/
-+UnityGenerated/
-+Library/
-+ 
-+# ===================================== #
-+# Visual Studio / MonoDevelop generated #
-+# ===================================== #
-+ExportedObj/
-+*.svd
-+*.userprefs
-+*.csproj
-+*.pidb
-+*.suo
-+*.sln
-+*.user
-+*.unityproj
-+*.booproj
-+ 
-+# ============ #
-+# OS generated #
-+# ============ #
-+.DS_Store
-+.DS_Store?
-+._*
-+.Spotlight-V100
-+.Trashes
-+Icon?
-+ehthumbs.db
-+Thumbs.db
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+ 
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+ 
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+<<<<<<< HEAD
+Thumbs.db
+=======
+Thumbs.db
+>>>>>>> 439183905d35734c36195403a301cf6a54f5ca36
