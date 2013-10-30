@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelExit : MonoBehaviour {
+public class LevelExit : MonoBehaviour
+{
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+	{
+
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+	{
+
 	}
-	
+
 	// Triggers level end when entered by Player
-	void OnTriggerEnter(Collider other) {
+	void OnTriggerEnter (Collider other)
+	{
 		if (other.name == "Player") {
-			GameEventManager.TriggerLevelComplete();
+			GameEventManager.TriggerLevelComplete ();
 		}
 	}
-	
+
 }
