@@ -21,14 +21,12 @@ public class Enemy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		transform.parent = GameObject.Find("Enemy Spawn").transform;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-//		if (canMove) {
-//			transform.Translate(Vector3.left * speed * Time.deltaTime);
-//		}
 		
 	}
 	
