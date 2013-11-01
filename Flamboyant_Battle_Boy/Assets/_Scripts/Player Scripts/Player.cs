@@ -24,8 +24,8 @@ public class Player : MonoBehaviour {
 	
 	private void OnTriggerStay(Collider other) {
 		
-		if (other.name == "Enemy(Clone)" && Input.GetButtonDown("Fire1")) {
-
+		
+		if (other.tag == "Enemy" && Input.GetButtonDown("Fire1")) {
 			Enemy e = (Enemy)other.gameObject.GetComponent("Enemy");
 			Attack (e);	
 		}

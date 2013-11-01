@@ -16,10 +16,14 @@ public class AlertRange : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		e.currentState = EnemyAttack.EnemyState.alert;
+		if (other.name == "Player") {
+			e.currentState = EnemyAttack.EnemyState.alert;
+		}
 	}
 	
 	void OnTriggerExit(Collider other) {
-		e.currentState = EnemyAttack.EnemyState.idle;
+		if (other.name == "Player") {
+			e.currentState = EnemyAttack.EnemyState.idle;
+		}
 	}
 }

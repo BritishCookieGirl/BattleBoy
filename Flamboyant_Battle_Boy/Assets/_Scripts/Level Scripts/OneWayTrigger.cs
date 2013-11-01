@@ -5,7 +5,7 @@ public class OneWayTrigger : MonoBehaviour
 {
     void OnTriggerEnter(Collider collide)
     {
-        if (collide.tag == "Player")
+        if (collide.tag == "Player" || collide.tag == "Enemy")
         {
             transform.parent.collider.isTrigger = false;
         }
@@ -13,7 +13,7 @@ public class OneWayTrigger : MonoBehaviour
 
     void OnTriggerExit(Collider collide)
     {
-        if (collide.tag == "Player")
+        if (collide.tag == "Player" || collide.tag == "Enemy")
         {
             transform.parent.collider.isTrigger = true;
         }
