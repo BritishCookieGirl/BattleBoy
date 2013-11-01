@@ -1,28 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DeathZone : MonoBehaviour
-{
+public class DeathZone : MonoBehaviour {
 
 	// Use this for initialization
-	void Start ()
-	{
-
+	void Start () {
+	
 	}
-
+	
 	// Update is called once per frame
-	void Update ()
-	{
-
+	void Update () {
+	
 	}
-
-	void OnTriggerEnter (Collider other)
-	{
+	
+	void OnTriggerEnter(Collider other) {
 		if (other.name == "Player") {
-			other.SendMessage ("OnDeath");
+			other.SendMessage("OnDeath");
 		} else {
-			Destroy (other.gameObject);
+			Destroy(other.gameObject);
 		}
-	}
-
+    }
+	
 }

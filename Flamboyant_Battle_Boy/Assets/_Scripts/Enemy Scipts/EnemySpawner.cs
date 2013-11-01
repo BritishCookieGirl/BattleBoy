@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawner : MonoBehaviour
-{
-
+public class EnemySpawner : MonoBehaviour {
+	
 	public Transform enemy;
 	
 	
@@ -29,9 +28,9 @@ public class EnemySpawner : MonoBehaviour
 	void Update () {
 		
 		if (GameManager.currentTime > nextSpawn && canSpawn) {
-
-			Spawn ();
-
+			
+			Spawn();
+		
 			if (currentEnemies >= maxSpawn) {
 				canSpawn = false;
 			}
@@ -58,5 +57,5 @@ public class EnemySpawner : MonoBehaviour
 	private void LevelComplete() {
 		canSpawn = false;	
 	}
-
+	
 }

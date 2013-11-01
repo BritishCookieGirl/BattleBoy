@@ -1,33 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Timer : MonoBehaviour
-{
-
+public class Timer : MonoBehaviour{
+	
 	public float startTime, bonusTime, endTime, remainingTime;
-
+	
 	// Use this for initialization
-	void Start ()
-	{
+	void Start () {
 		GameEventManager.LevelStart += LevelStart;
 		GameEventManager.LevelComplete += LevelComplete;
 	}
-
+	
 	// Update is called once per frame
-	void Update ()
-	{
+	void Update () {
 		remainingTime = bonusTime - Time.time;
-
+		
 	}
-
-	private void LevelStart ()
-	{
+	
+	private void LevelStart() {
 		startTime = Time.time;
 	}
-
-	private void LevelComplete ()
-	{
+	
+	private void LevelComplete() {
 		endTime = Time.time;
 	}
-
+	
 }

@@ -409,11 +409,11 @@ public class PlatformerControllerMovement
     // when pressing "Fire1" button (control) we start running
     public float runSpeed = 10.0f;
 
-    public float inAirControlAcceleration = 2.0f;
+    public float inAirControlAcceleration = 1.0f;
 
     // The gravity for the character
-    public float gravity = 40.0f;
-    public float maxFallSpeed = 10.0f;
+    public float gravity = 60.0f;
+    public float maxFallSpeed = 20.0f;
 
     // How fast does the character change speeds?  Higher is faster.
     public float speedSmoothing = 5.0f;
