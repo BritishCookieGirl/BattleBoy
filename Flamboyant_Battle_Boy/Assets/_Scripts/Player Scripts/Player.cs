@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	public void Attack(Enemy enemy) {
-		enemy.TakeDamage(attackStrength);
+		enemy.ReceiveDamage("test", attackStrength);
 		ComboManager.UpdateCombo(1);
 	}
 	

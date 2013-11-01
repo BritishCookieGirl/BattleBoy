@@ -5,11 +5,6 @@ public class EnemySpawner : MonoBehaviour
 {
 
 	public Transform enemy;
-<<<<<<< HEAD:Flamboyant_Battle_Boy/Assets/_Scripts/Enemy Scipts/EnemySpawner.cs
-=======
-	
-	
->>>>>>> Eric-Dev-Branch:Flamboyant_Battle_Boy/Assets/_Scripts/Enemy Scipts/EnemySpawner.cs
 	public float spawnRate = 5.0f;
 	public int maxSpawn = 1;
 	public static int currentEnemies = 0;
@@ -18,16 +13,9 @@ public class EnemySpawner : MonoBehaviour
 
 
 	// Called before Start
-<<<<<<< HEAD:Flamboyant_Battle_Boy/Assets/_Scripts/Enemy Scipts/EnemySpawner.cs
-	void Awake ()
-	{
-		GameEventManager.LevelStart += LevelStart;
-		GameEventManager.LevelComplete += LevelComplete;
-=======
 	void Awake() {
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;		
->>>>>>> Eric-Dev-Branch:Flamboyant_Battle_Boy/Assets/_Scripts/Enemy Scipts/EnemySpawner.cs
 	}
 	// Use this for initialization
 	void Start ()

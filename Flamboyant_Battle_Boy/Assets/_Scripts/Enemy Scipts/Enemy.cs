@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	// Use by external objects to apply damage to enemy instance
-	public void TakeDamage(int attackStrength) {
+	public void ReceiveDamage(string attackType, int attackStrength) {
 		int damageTaken = attackStrength - defense;
 		health -= damageTaken;
 		if (health <= 0) {
