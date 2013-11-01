@@ -20,7 +20,11 @@ public class LevelExit : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.name == "Player") {
+<<<<<<< HEAD:Flamboyant_Battle_Boy/Assets/_Scripts/Level Scripts/LevelExit.cs
 			GameEventManager.TriggerLevelComplete ();
+=======
+			GameManager.TriggerLevelComplete();
+>>>>>>> Eric-Dev-Branch:Flamboyant_Battle_Boy/Assets/_Scripts/Level Scripts/LevelExit.cs
 		}
 	}
 
