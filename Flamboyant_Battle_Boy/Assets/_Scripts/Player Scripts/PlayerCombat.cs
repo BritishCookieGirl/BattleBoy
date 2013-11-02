@@ -14,7 +14,7 @@ public class PlayerCombat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //AttackBox.SetActive(false);
+        AttackBox.SetActive(false);
         attackStartTime = 0f;
         attackLength = 1f;
     }

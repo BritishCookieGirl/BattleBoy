@@ -6,9 +6,9 @@ public class PlayerAttack : MonoBehaviour
     private string attackType;
     public string AttackType { get { return attackType; } set { attackType = value; } }
 
-    private Vector3 liftEnd = new Vector3(0f, .5f, .75f);
-    private Vector3 smashEnd = new Vector3(0f, -.5f, .75f);
-    private Vector3 neutralEnd = new Vector3(0f, 0f, .75f);
+    private Vector3 liftEnd = new Vector3(0f, .5f, .5f);
+    private Vector3 smashEnd = new Vector3(0f, -.5f, .5f);
+    private Vector3 neutralEnd = new Vector3(0f, 0f, .5f);
     private Vector3 dest;
 
     private float journeyLength;
@@ -74,6 +74,17 @@ public class PlayerAttack : MonoBehaviour
     {
         if (collide.gameObject.tag == "Enemy")
         {
+            Vector3 force;
+            switch (AttackType)
+            {
+                case "Lift": force = new Vector3(0f, 400f, 0f); break;
+                case "Smash": force = new Vector3(0f, -400f, 0f); break;
+                case "Neutral": force = new Vector3(0f, 0f, 400f); break;
+                case "Special1": force = new Vector3(0f, 0f, 10000f); break;
+                default: force = Vector3.zero; break;
+            }
+            collide.gameObject.rigidbody.AddForce(force);
+
             int attackStrength = 20;
             collide.gameObject.GetComponent<Enemy>().ReceiveDamage(AttackType, attackStrength);
         }
