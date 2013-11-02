@@ -14,6 +14,7 @@ public static class ComboManager {
 	static ComboManager() {
 		maxCombo = 5;
 		comboTime = 3;
+		multiplier = 1;
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;
 	}

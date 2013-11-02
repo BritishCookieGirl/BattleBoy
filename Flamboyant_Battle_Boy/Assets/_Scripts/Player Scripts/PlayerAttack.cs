@@ -87,6 +87,7 @@ public class PlayerAttack : MonoBehaviour
 
             int attackStrength = 20;
             collide.gameObject.GetComponent<Enemy>().ReceiveDamage(AttackType, attackStrength);
+			ComboManager.UpdateCombo(1);
         }
     }
 }
