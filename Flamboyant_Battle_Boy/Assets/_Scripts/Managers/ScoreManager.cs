@@ -23,9 +23,27 @@ public static class ScoreManager {
 		}
 	}
 	
+	public static bool PurchaseItem(int points) {
+		if (score < points) {
+			return false;
+		}
+		
+		score -= points;
+		
+		if (ScoreChanged != null) {
+			ScoreChanged(score);	
+		}
+		
+		return true;
+	}
+	
 	// Manually reset score 
 	public static void ResetScore() {
-		UpdateScore (0);	
+		score = 0;
+		
+		if (ScoreChanged != null) {
+			ScoreChanged(score);	
+		}
 	}
 	
 	// Calculations for end of game bonus points

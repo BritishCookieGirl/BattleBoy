@@ -16,6 +16,7 @@ public class UnlockableItem : MonoBehaviour {
 	public AudioClip selectedSound;
 	
 	public bool unlocked;
+	static bool canClick;
 	
 	private StoreManager store;
 		
@@ -34,6 +35,7 @@ public class UnlockableItem : MonoBehaviour {
 			renderer.material.mainTexture = lockedTexture;
 		}
 		
+		canClick = true;
 		audio.clip = hoverSound;
 	
 	}
@@ -45,8 +47,10 @@ public class UnlockableItem : MonoBehaviour {
 	
 	void OnMouseEnter() {
 		//renderer.material.mainTexture = unlockedTexture;
-		renderer.material.color = hoverColor;
-		audio.Play();
+		if (canClick) {
+			renderer.material.color = hoverColor;
+			audio.Play();
+		}
 		
 	}
 	
@@ -56,12 +60,17 @@ public class UnlockableItem : MonoBehaviour {
 	}
 	
 	void OnMouseDown() {
-		print (this.GetComponent<UnlockableItem>());
-		print (store);
-		renderer.material.color = activeColor;
-		audio.clip = selectedSound;
-		store.UpdateIcon(this.GetComponent<UnlockableItem>());
-		audio.Play();
+		
+		if (canClick) {
+			renderer.material.color = activeColor;
+			
+			store.UpdateIcon(this.GetComponent<UnlockableItem>());
+			SwapClickable();
+				
+			audio.clip = selectedSound;
+			audio.Play();
+		}
+		
 	}
 	
 	void OnMouseUp() {
@@ -71,5 +80,9 @@ public class UnlockableItem : MonoBehaviour {
 	
 	public string PointString() {
 		return itemCost.ToString() + " pts";
+	}
+	
+	public void SwapClickable(){
+		canClick = !canClick;
 	}
 }
