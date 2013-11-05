@@ -61,7 +61,7 @@ public class UnlockableItem : MonoBehaviour {
 	
 	void OnMouseDown() {
 		
-		if (canClick) {
+		if (canClick && unlocked) {
 			renderer.material.color = activeColor;
 			
 			store.UpdateIcon(this.GetComponent<UnlockableItem>());

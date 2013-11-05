@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StoreManager : MonoBehaviour {
 	
-	private float height =250;
+	private float height = 250;
 	private float width = 400;
 	private bool windowOpen;
 	private bool errorOpen;
@@ -41,7 +41,7 @@ public class StoreManager : MonoBehaviour {
 		}
     }
 	
-    void ItemWindow(int windowID) {
+    private void ItemWindow(int windowID) {
 		GUI.Label(new Rect(15,15,130,130),displayItem.unlockedTexture);
         GUI.Label(new Rect(165,10,200,100),displayItem.itemName,itemNameStyle);
 		GUI.Label(new Rect(150,35,200,5), "************************", dividerStyle);
@@ -59,7 +59,7 @@ public class StoreManager : MonoBehaviour {
 		GUI.Label(new Rect(20,175,370,100),displayItem.itemDescription, itemDescriptionStyle);
     }
 	
-	void ErrorWindow(int windowID) {
+	private void ErrorWindow(int windowID) {
 		string errorText = "You are much too bland and boring to posess this item. Maintain vigilance in your holy quest and perhaps one day you shall be worthy of weilding the grandeur item that is currently the object of your affection.";
 		GUI.Label(new Rect(10,15, width-30, 30),"INSUFFICIENT FABULOUSNESS", errorStyle);
 		GUI.Label(new Rect(5,50,width-30,5), "***************************************", errorStyle);
@@ -69,31 +69,39 @@ public class StoreManager : MonoBehaviour {
 		}
 	}
 	
-	void BuyClicked() {
+	private void BuyClicked() {
 		
 		if (ScoreManager.PurchaseItem(displayItem.itemCost)) {
 			print ("item purchased");
 			CloseWindow();
+			
+			//
+			//adjust abilities
+			//
+			
 		} else {
 			errorOpen = true;
 		}
-		//adjust abilities
+		
 	}
 	
-	void CancelClicked() {
+	private void CancelClicked() {
 		print ("item not purchased");
 		CloseWindow();
 	}
 	
-	void ContinueClicked() {
+	private void ContinueClicked() {
 		errorOpen = false;
 		CloseWindow();
 		
 	}
 	
 	public void UpdateIcon(UnlockableItem display) {
-		windowOpen = true;
+		
 		displayItem = display.GetComponent<UnlockableItem>();
+		if (displayItem.unlocked) {
+			windowOpen = true;
+		}
 	}
 	
 	private void CloseWindow() {
