@@ -15,7 +15,7 @@ public class CharacterController2D : MonoBehaviour
 
     public PlatformerControllerJumping jump;
 
-    public CharacterController controller;
+    private CharacterController controller;
 
     // Moving platform support.
     private Transform activePlatform;
@@ -40,14 +40,31 @@ public class CharacterController2D : MonoBehaviour
 
     void Awake()
     {
+        GameEventManager.LevelStart += LevelStart;
+        GameEventManager.LevelComplete += LevelComplete;
+
         movement.direction = transform.TransformDirection(Vector3.forward);
         controller = GetComponent<CharacterController>();// GetComponent(CharacterController);
-        Spawn();
+
+        if(this.gameObject.tag == "Player")
+            Spawn();
 
         // FOR TESTING ONLY
         DoubleJumpEnabled = true;
         TripleJumpEnabled = true;
         // END TESTING
+    }
+
+    // Called Automatically anytime level starts - set default variables here
+    private void LevelStart()
+    {
+        canControl = true;
+    }
+
+    // Called automatically anytime level finishes - set win/lose conditions here
+    private void LevelComplete()
+    {
+        canControl = false;
     }
 
     void Spawn()
@@ -68,6 +85,9 @@ public class CharacterController2D : MonoBehaviour
     void UpdateSmoothedMovementDirection()
     {
         float h = Input.GetAxisRaw("Horizontal");
+
+        if (this.gameObject.tag != "Player")
+            canControl = false;
 
         if (!canControl)
             h = 0.0f;
@@ -101,7 +121,23 @@ public class CharacterController2D : MonoBehaviour
             // In air controls
             movement.hangTime += Time.deltaTime;
             if (movement.isMoving)
-                movement.inAirVelocity += new Vector3(Mathf.Sign(h), 0, 0) * Time.deltaTime * movement.inAirControlAcceleration;
+            {
+                if (this.gameObject.tag == "Player")
+                {
+                    Vector3 moveDirection = Vector3.zero;
+                    moveDirection.z = (float)Input.GetAxis("Horizontal") * movement.walkSpeed;
+                    if (moveDirection.z < 0) moveDirection.z *= -1;
+                    moveDirection = this.transform.TransformDirection(moveDirection);
+                    movement.inAirVelocity = moveDirection;
+                }
+                else
+                    movement.inAirVelocity = new Vector3(Mathf.Sign(h), 0, 0) * Time.deltaTime * movement.inAirControlAcceleration;
+            }
+
+            // In air controls
+            //movement.hangTime += Time.deltaTime;
+            //if (movement.isMoving)
+            //    movement.inAirVelocity = new Vector3(Mathf.Sign(h), 0, 0) * Time.deltaTime * movement.inAirControlAcceleration * movement.walkSpeed * 2;
         }
     }
 
@@ -135,6 +171,9 @@ public class CharacterController2D : MonoBehaviour
     {
         // Apply gravity
         bool jumpButton = Input.GetButton("Jump");
+
+        if (gameObject.tag != "Player")
+            canControl = false;
 
         if (!canControl)
             jumpButton = false;
@@ -177,7 +216,7 @@ public class CharacterController2D : MonoBehaviour
         if (canTripleJump() && IsDoubleJumping() && Input.GetButtonDown("Jump") && !IsTouchingCeiling())
         {
             jump.tripleJumping = true;
-            movement.verticalSpeed = CalculateJumpVerticalSpeed(jump.doubleJumpHeight);
+            movement.verticalSpeed = CalculateJumpVerticalSpeed(jump.tripleJumpHeight);
             jump.canTripleJump = false;
         }
 
@@ -234,7 +273,9 @@ public class CharacterController2D : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && canControl)
+        Vector3 moveDirection = Vector3.zero;
+
+        if (Input.GetButtonDown("Jump") && canControl && gameObject.tag == "Player")
         {
             jump.lastButtonTime = Time.time;
         }
@@ -395,10 +436,6 @@ public class CharacterController2D : MonoBehaviour
     }
 
     #endregion
-
-    // Require a character controller to be attached to the same game object
-    //@script RequireComponent(CharacterController);
-    //@script AddComponentMenu("2D Platformer/Platformer Controller");
 }
 
 [System.Serializable]
@@ -416,12 +453,12 @@ public class PlatformerControllerMovement
     public float maxFallSpeed = 10.0f;
 
     // How fast does the character change speeds?  Higher is faster.
-    public float speedSmoothing = 5.0f;
+    public float speedSmoothing = 10.0f;
 
     // This controls how fast the graphics of the character "turn around" when the player turns around using the controls.
     public float rotationSmoothing = 10.0f;
 
-    // The current move direction in x-y.  This will always been (1,0,0) or (-1,0,0)
+    // The current move direction in x-y.  This will always be (1,0,0) or (-1,0,0)
     // The next line, @System.NonSerialized , tells Unity to not serialize the variable or show it in the inspector view.  Very handy for organization!
     //@System.NonSerialized
     [System.NonSerialized]

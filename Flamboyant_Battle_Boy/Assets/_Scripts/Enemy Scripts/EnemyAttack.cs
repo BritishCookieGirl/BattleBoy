@@ -8,9 +8,10 @@ public class EnemyAttack : MonoBehaviour {
 	public float speed = 2.0f;
 	public enum EnemyState {alert, attack, idle};
 	public EnemyState currentState;
+
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 		mood = transform.FindChild("Mood");
 	}
 	
