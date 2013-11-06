@@ -45,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
 	//Spawn new enemy from prefab
 	public void Spawn ()
 	{
-		Instantiate (enemy, transform.position, transform.rotation);
+        Instantiate(enemy, new Vector3(this.transform.position.x, 2f, 7f), transform.rotation);
 		currentEnemies++;
 	}
 

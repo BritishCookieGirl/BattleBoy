@@ -75,17 +75,23 @@ public class PlayerAttack : MonoBehaviour
         if (collide.gameObject.tag == "Enemy")
         {
             Vector3 force;
+            int attackStrength;
+
+            Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().GetDirection();
+
             switch (AttackType)
             {
-                case "Lift": force = new Vector3(0f, 400f, 0f); break;
-                case "Smash": force = new Vector3(0f, -400f, 0f); break;
-                case "Neutral": force = new Vector3(0f, 0f, 400f); break;
-                case "Special1": force = new Vector3(0f, 0f, 10000f); break;
-                default: force = Vector3.zero; break;
+                case "Lift": force = new Vector3(5f, 25f, 0f); attackStrength = 2; break;
+                case "Smash": force = new Vector3(5f, -15f, 0f); attackStrength = 2; break;
+                case "Neutral": force = new Vector3(5f, 5f, 0f); attackStrength = 2; break;
+                case "Special1": force = new Vector3(4f, 2f, 0f); attackStrength = 9; break;
+                default: force = Vector3.zero; attackStrength = 0; break;
             }
-            collide.gameObject.rigidbody.AddForce(force);
 
-            int attackStrength = 20;
+            force.x *= direction.x;
+            collide.gameObject.GetComponent<Enemy>().AddImpact(force, attackStrength);
+
+            attackStrength *= 10;
             collide.gameObject.GetComponent<Enemy>().ReceiveDamage(AttackType, attackStrength);
 			ComboManager.UpdateCombo(1);
         }

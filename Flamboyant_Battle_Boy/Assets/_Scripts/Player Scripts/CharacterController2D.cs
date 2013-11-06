@@ -72,6 +72,8 @@ public class CharacterController2D : MonoBehaviour
         // reset the character's speed
         movement.verticalSpeed = 0.0f;
         movement.speed = 0.0f;
+        if (this.gameObject.tag == "Enemy")
+            movement.gravity /= 3;
 
         // reset the character's position to the spawnPoint
         transform.position = spawnPoint.position;
@@ -415,7 +417,7 @@ public class CharacterController2D : MonoBehaviour
         return (movement.collisionFlags & CollisionFlags.CollidedAbove) != 0;
     }
 
-    Vector3 GetDirection()
+    public Vector3 GetDirection()
     {
         return movement.direction;
     }
