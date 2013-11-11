@@ -17,8 +17,8 @@ public class Enemy : MonoBehaviour
 	
 	// Called before Start
 	void Awake() {
-		GameEventManager.LevelStart += LevelStart;
-		GameEventManager.LevelComplete += LevelComplete;		
+		GameManager.LevelStart += LevelStart;
+		GameManager.LevelComplete += LevelComplete;		
 	}
 	
 	// Use this for initialization
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     {
         character = this.GetComponent<CharacterController>();
         impact = Vector3.zero;
-		//transform.parent = GameObject.Find("Enemy Spawn").transform;
+	//transform.parent = GameObject.Find("Enemy Spawn").transform;
 
         //Prevent enemies from colliding with each other and player
         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
@@ -84,15 +84,15 @@ public class Enemy : MonoBehaviour
 		if (health <= 0) {
 			Destroy(gameObject);	
 		}
-		
-		ScoreManager.UpdateScore(damageTaken);
+		print ("Taking damage: " + damageTaken);
+		ScoreManager.AddToScore(damageTaken);
 
 	}
 	
 	// Called before object death - use to tidy lose ends
 	private void OnDestroy() {
 		EnemySpawner.currentEnemies--;
-		ScoreManager.UpdateScore(pointValue);
+		ScoreManager.AddToScore(pointValue);
 	}
 	
 	

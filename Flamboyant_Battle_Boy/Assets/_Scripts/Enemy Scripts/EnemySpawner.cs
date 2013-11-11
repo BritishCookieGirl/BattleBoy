@@ -8,8 +8,8 @@ public class EnemySpawner : MonoBehaviour
 	public float spawnRate = 5.0f;
 	public int maxSpawn = 1;
 	public static int currentEnemies = 0;
-	private bool canSpawn = true;
-	private float nextSpawn = 0.0f;
+	private bool canSpawn = false;
+	private float nextSpawn = 10.0f;
 
 
 	// Called before Start
@@ -26,14 +26,12 @@ public class EnemySpawner : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
+		if (currentEnemies >= maxSpawn) {
+			canSpawn = false;
+		}
+		
 		if (GameManager.currentTime > nextSpawn && canSpawn) {
-
 			Spawn ();
-
-			if (currentEnemies >= maxSpawn) {
-				canSpawn = false;
-			}
 		}
 
 		if (currentEnemies < maxSpawn && canSpawn == false) {
@@ -53,6 +51,8 @@ public class EnemySpawner : MonoBehaviour
 	private void LevelStart ()
 	{
 		canSpawn = true;
+		//respawn enemies
+		//reset enemy posiitions
 	}
 
 	// Called automatically anytime level finishes - set win/lose conditions here

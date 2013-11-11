@@ -2,12 +2,19 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+
 public class UnlockableItem : MonoBehaviour {
+	
+	public enum Feature {Combo, Ability, Cosmetic};
+	
+	static bool canClick;
 	
 	public string itemName;
 	public string itemEffect;
 	public string itemDescription;
 	public int itemCost;
+	public bool unlocked, purchased;
+	public Feature unlockFeature;
 	
 	public Texture unlockedTexture;
 	public Texture lockedTexture;
@@ -15,11 +22,9 @@ public class UnlockableItem : MonoBehaviour {
 	public AudioClip hoverSound;
 	public AudioClip selectedSound;
 	
-	public bool unlocked;
-	static bool canClick;
-	
 	private StoreManager store;
-		
+	
+	private Color fadedColor = new Color(0.4f,0.4f,0.4f);
 	private Color normalColor = new Color(0.6f,0.6f,0.6f);
 	private Color hoverColor = new Color(0.75f,0.75f,0.75f);
 	private Color activeColor = new Color(1.0f,1.0f,1.0f);
@@ -47,7 +52,7 @@ public class UnlockableItem : MonoBehaviour {
 	
 	void OnMouseEnter() {
 		//renderer.material.mainTexture = unlockedTexture;
-		if (canClick) {
+		if (canClick && !purchased) {
 			renderer.material.color = hoverColor;
 			audio.Play();
 		}
@@ -61,7 +66,7 @@ public class UnlockableItem : MonoBehaviour {
 	
 	void OnMouseDown() {
 		
-		if (canClick && unlocked) {
+		if (canClick && unlocked && !purchased) {
 			renderer.material.color = activeColor;
 			
 			store.UpdateIcon(this.GetComponent<UnlockableItem>());
@@ -82,7 +87,19 @@ public class UnlockableItem : MonoBehaviour {
 		return itemCost.ToString() + " pts";
 	}
 	
-	public void SwapClickable(){
+	public void SwapClickable() {
 		canClick = !canClick;
 	}
+	
+	public Feature UnlockFeature() {
+		purchased = true;
+		renderer.material.color = fadedColor;
+		return unlockFeature;
+	}
+	
+	public void UnlockIcon() {
+		unlocked = true;
+		renderer.material.mainTexture = unlockedTexture;
+	}
+	
 }

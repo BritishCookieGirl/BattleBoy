@@ -12,6 +12,8 @@ public class StartMenu : MonoBehaviour {
 	private float bWidth = 300;
 	private float bHeight = 60;
 	
+private bool showStartMenu = true;
+	
 	private Rect startMenuRect,buttonRect;
 	
 	public GUIStyle startStyle, buttonStyle;
@@ -19,6 +21,9 @@ public class StartMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		startMenuRect = new Rect((Screen.width/2 - width/2), 0, width, height);
+		
+		//GameManager.LevelStart += LevelStart;
+		//GameManager.GameStart += StartGame;
 		
 	}
 	
@@ -28,7 +33,9 @@ public class StartMenu : MonoBehaviour {
 	}
 	
 	void OnGUI() {
-		startMenuRect = GUI.Window(0,startMenuRect, StartWindow, windowTexture,startStyle);
+		if (showStartMenu) {
+			startMenuRect = GUI.Window(0,startMenuRect, StartWindow, windowTexture,startStyle);
+		}
 	}
 	
 	private void StartWindow(int windowID) {
@@ -50,18 +57,23 @@ public class StartMenu : MonoBehaviour {
 	
 	private void StartClicked() {
 		//Start Level
+		GameManager.TriggerLevelStart();
 	}
 	
 	private void TutorialClicked() {
 		//Start Tutorial
+		
 	}
 	
 	private void OptionsClicked() {
 		//Start Options Screen
+		
 	}
 	
 	private void CreditsClicked() {
 		//Start Credits
+		
 	}
 	
+
 }

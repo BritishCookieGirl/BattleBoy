@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GUIManager : MonoBehaviour
+public class HUDManager : MonoBehaviour
 {
 
 	public GUIText comboText, scoreText, timerText, comboCounter;
@@ -48,7 +48,9 @@ public class GUIManager : MonoBehaviour
 	// Called automatically anytime score changes - updates score GUI text
 	private void DisplayScore (int points)
 	{
-		scoreText.text = points.ToString ();
+		if (scoreText != null) {
+			scoreText.text = points.ToString ();
+		}
 	}
 
 	// Called automatically anytime time changes - updates time GUI text

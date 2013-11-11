@@ -40,8 +40,8 @@ public class CharacterController2D : MonoBehaviour
 
     void Awake()
     {
-        GameEventManager.LevelStart += LevelStart;
-        GameEventManager.LevelComplete += LevelComplete;
+        GameManager.LevelStart += LevelStart;
+        GameManager.LevelComplete += LevelComplete;
 
         movement.direction = transform.TransformDirection(Vector3.forward);
         controller = GetComponent<CharacterController>();// GetComponent(CharacterController);
@@ -59,6 +59,9 @@ public class CharacterController2D : MonoBehaviour
     private void LevelStart()
     {
         canControl = true;
+		if(this != null && this.gameObject.tag == "Player") {
+            Spawn();
+		}
     }
 
     // Called automatically anytime level finishes - set win/lose conditions here

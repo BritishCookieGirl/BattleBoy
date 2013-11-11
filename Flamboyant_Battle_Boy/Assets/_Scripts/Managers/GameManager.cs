@@ -7,17 +7,17 @@ public class GameManager : MonoBehaviour
 	//MERGED TIMER INTO THIS CLASS, MIGHT MOVE IT BACK OUT, 
 	//Did BREAK OFF COMBO/SCORE MANAGEMENT TO SEPARATE MANAGEMENT OBJECTS
 
-	public float bonusTime;
-	public static float currentTime, remainingTime;
+	public static float bonusTime;
+	public static float currentTime, remainingTime, bonusEndTime;
 	private static float startTime, endTime;
-
+	private static bool levelRunning;
 	//Event Declarations
 
 	public delegate void TimeEventHandler (float time);
 	public static event TimeEventHandler TimeChanged;
 	
 	public delegate void GameEvent();
-	public static event GameEvent LevelStart, LevelComplete;
+	public static event GameEvent GameStart, GameOver, LevelStart, LevelComplete, StoreOpen, StoreClosed;
 
 	//End Events Declarations
 
@@ -29,7 +29,10 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		GameEventManager.TriggerLevelStart ();
+		bonusTime = 100;
+		levelRunning = false;
+		bonusEndTime = bonusTime;
+		TriggerGameStart ();
 	}
 
 	// Update is called once per frame
@@ -44,24 +47,35 @@ public class GameManager : MonoBehaviour
 	{
 
 		currentTime = time;
-		remainingTime = bonusTime - currentTime;
+		remainingTime = bonusEndTime - currentTime;
 
 		// Check for remaining time in level
-		if (remainingTime < 0) {
+		if (levelRunning && remainingTime < 0) {
+			print ("out of time!");
 			TriggerLevelComplete ();
 		}
 
 		// Fire time event with current time
-		if (TimeChanged != null) {
+		if (levelRunning && TimeChanged != null) {
 			TimeChanged (remainingTime);
+		}
+	}
+	
+	public static void TriggerGameStart() {
+		if (GameStart != null) {
+			print ("GameStart Event Dispatched");
+			GameStart();
 		}
 	}
 	
 	public static void TriggerLevelStart() {
 		
 		startTime = Time.time;
+		bonusEndTime = startTime + bonusTime;
+		levelRunning = true;
 		
 		if (LevelStart != null) {
+			print ("LevelStart Event Dispatched");
 			LevelStart();	
 		}
 	}
@@ -70,9 +84,27 @@ public class GameManager : MonoBehaviour
 	public static void TriggerLevelComplete() {
 		
 		endTime = Time.time;
+		levelRunning = false;
 		
 		if (LevelComplete != null) {
+			print ("LevelComplete Event Dispatched");
 			LevelComplete();	
+		}
+	}
+	
+	public static void TriggerStoreActive() {
+		
+		if (StoreOpen != null) {
+			print ("StoreOpen Event Dispatched");
+			StoreOpen();	
+		}
+	}
+	
+	public static void TriggerStoreClosed() {
+		
+		if (StoreClosed != null) {
+			print ("StoreClosed Event Dispatched");
+			StoreClosed();	
 		}
 	}
 

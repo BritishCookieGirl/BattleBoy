@@ -4,6 +4,7 @@ using System.Collections;
 public static class ScoreManager {
 	
 	public static int score; 
+	public static int totalScore;
 	
 	public delegate void PointEventHandler(int points);
 	public static event PointEventHandler ScoreChanged;
@@ -14,21 +15,30 @@ public static class ScoreManager {
 	}
 
 	// Calculates score and raises event after score changes
+	public static void AddToScore (int points) {
+		if (ComboManager.multiplier > 1) {
+			points = (int)(points * ComboManager.multiplier);
+		}
+		
+		score += points;
+		UpdateScore(score);		
+		
+	}
+	
 	public static void UpdateScore (int points) {
-		
-		score += (int)(points * ComboManager.multiplier);
-		
+				
 		if (ScoreChanged != null) {
 			ScoreChanged(score);	
 		}
 	}
 	
 	public static bool PurchaseItem(int points) {
-		if (score < points) {
+		//score += 1000;
+		if (totalScore < points) {
 			return false;
 		}
 		
-		score -= points;
+		totalScore -= points;
 		
 		if (ScoreChanged != null) {
 			ScoreChanged(score);	
@@ -47,10 +57,16 @@ public static class ScoreManager {
 	}
 	
 	// Calculations for end of game bonus points
-	public static void CalculateFinalScore() {
+	public static int CalculateFinalScore() {
 		
 		int timeBonus = (int)GameManager.remainingTime * 100;
-		UpdateScore(timeBonus);
+		
+		totalScore += timeBonus;
+		totalScore += score;
+		
+		UpdateScore(totalScore);
+		
+		return totalScore;
 	}
 	
 	private static void LevelStart() {
@@ -58,7 +74,7 @@ public static class ScoreManager {
 	}
 	
 	private static void LevelComplete() {
-		CalculateFinalScore();
+		
 	}
 	
 }
