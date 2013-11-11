@@ -54,7 +54,9 @@ public class UnlockableItem : MonoBehaviour {
 		//renderer.material.mainTexture = unlockedTexture;
 		if (canClick && !purchased) {
 			renderer.material.color = hoverColor;
-			audio.Play();
+
+            Camera.main.SendMessage("PlaySoundEffect", "MenuButtonOver");
+			//audio.Play();
 		}
 		
 	}
@@ -71,9 +73,10 @@ public class UnlockableItem : MonoBehaviour {
 			
 			store.UpdateIcon(this.GetComponent<UnlockableItem>());
 			SwapClickable();
-				
-			audio.clip = selectedSound;
-			audio.Play();
+
+            Camera.main.SendMessage("PlaySoundEffect", "MenuButtonSelect");
+			//audio.clip = selectedSound;
+			//audio.Play();
 		}
 		
 	}
