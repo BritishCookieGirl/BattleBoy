@@ -8,11 +8,16 @@ public class EnemyAttack : MonoBehaviour {
 	public float speed = 2.0f;
 	public enum EnemyState {alert, attack, idle};
 	public EnemyState currentState;
+	public Transform pacePoint1, pacePoint2;
+	private bool point1;
+	public Transform spawnPoint;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
 		mood = transform.FindChild("Mood");
+		pacePoint1 = spawnPoint.transform.Find("PacePoint1");
+		pacePoint2 = spawnPoint.transform.Find("PacePoint2");
 	}
 	
 	// Update is called once per frame
@@ -64,6 +69,30 @@ public class EnemyAttack : MonoBehaviour {
 	private void Idle() {
 		//ignore player
 		mood.renderer.material.color = Color.green;
+		
+		float toPoint1 = Mathf.Abs((transform.position.x - pacePoint1.position.x));
+		float toPoint2 = Mathf.Abs((transform.position.x - pacePoint2.position.x));
+		
+		if (toPoint1 < 0.4f) {
+			point1 = false;
+		}
+		if (toPoint2 < 0.4f) {
+			point1 = true;
+		}
+
+		Vector3 dest;
+		
+		if (point1) {
+			dest = pacePoint1.position;
+		} else {
+			dest = pacePoint2.position;
+		}
+		
+		transform.position = Vector3.MoveTowards(transform.position, dest, speed * Time.deltaTime);
+	}
+	
+	private void OnDestroy() {
+		//spawnPoint.GetComponent<EnemySpawner> ().needsSpawn = true;
 	}
 }
 

@@ -45,7 +45,10 @@ public class CharacterController2D : MonoBehaviour
 
         movement.direction = transform.TransformDirection(Vector3.forward);
         controller = GetComponent<CharacterController>();// GetComponent(CharacterController);
-
+		
+		if (this.gameObject.tag == "Enemy")
+			spawnPoint = transform;
+		
         if(this.gameObject.tag == "Player")
             Spawn();
 

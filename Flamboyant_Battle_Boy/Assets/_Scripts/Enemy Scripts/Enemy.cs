@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 	public int defense = 0;
 	public int pointValue = 100;
 
+
     private CharacterController character;
 
 //	public delegate void DamageEventHandler(int points);
@@ -18,7 +19,8 @@ public class Enemy : MonoBehaviour
 	// Called before Start
 	void Awake() {
 		GameManager.LevelStart += LevelStart;
-		GameManager.LevelComplete += LevelComplete;		
+		GameManager.LevelComplete += LevelComplete;
+		
 	}
 	
 	// Use this for initialization
@@ -74,7 +76,8 @@ public class Enemy : MonoBehaviour
 	
 	// Called automatically anytime level finishes - set win/lose conditions here
 	private void LevelComplete() {
-		canMove = false;	
+		print ("destroying enemey");
+		Destroy(gameObject);	
 	}
 	
 	// Use by external objects to apply damage to enemy instance
@@ -82,17 +85,17 @@ public class Enemy : MonoBehaviour
 		int damageTaken = attackStrength - defense;
 		health -= damageTaken;
 		if (health <= 0) {
-			Destroy(gameObject);	
+			ScoreManager.AddToScore(pointValue);
+			Destroy(gameObject);
 		}
-		print ("Taking damage: " + damageTaken);
 		ScoreManager.AddToScore(damageTaken);
 
 	}
 	
 	// Called before object death - use to tidy lose ends
 	private void OnDestroy() {
-		EnemySpawner.currentEnemies--;
-		ScoreManager.AddToScore(pointValue);
+		GameManager.LevelStart -= LevelStart;
+		GameManager.LevelComplete -= LevelComplete;
 	}
 	
 	
