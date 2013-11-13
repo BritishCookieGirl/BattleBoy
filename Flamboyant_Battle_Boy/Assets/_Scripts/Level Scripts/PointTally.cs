@@ -18,6 +18,7 @@ public class PointTally : MonoBehaviour {
 	public GUIStyle seperatorStyle;
 	public GUIStyle totalStyle;
 	public GUIStyle buttonStyle;
+	public GUIStyle bTextStyle, bTextShaddowStyle;
 	
 	void Awake () {
 		GameManager.LevelStart += EndTally;
@@ -27,7 +28,7 @@ public class PointTally : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		windowRect = new Rect((Screen.width/2 - width/2), 20, width, height);
+		windowRect = new Rect((Screen.width/2 - width/2), 75, width, height);
 		windowOpen = true;
 		
 //		enemies = 500;
@@ -66,10 +67,12 @@ public class PointTally : MonoBehaviour {
 		GUI.Label(new Rect(20, 300, 100, 20), "Total Score", totalStyle);
 		GUI.Label(new Rect(330, 300, 100, 20), totalD.ToString(), pointStyle);
 		
-		if (GUI.Button(new Rect(50,350,140,35),"Continue",buttonStyle)){
+		if (GUI.Button(new Rect(100,350,200,75),"",buttonStyle)){
 			CloseWindow();
 		}
 		
+		GUI.Label(new Rect(115,355, 200,75),"Continue",bTextShaddowStyle);
+		GUI.Label(new Rect(115,355, 200,75),"Continue",bTextStyle);		
 	}
 	
 	void CountUpPoints ()

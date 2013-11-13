@@ -3,10 +3,10 @@ using System.Collections;
 
 public class CameraManager : MonoBehaviour {
 	
-	public Camera startMenuCam, mainLevelCam, unlockStoreCam;
+	public Camera startMenuCam, mainLevelCam, unlockStoreCam, creditsCam;
 	public Light sceneLight;
 	public Transform audioListener;
-	public GameObject startGUI, levelGUI, storeGUI, pointTally;
+	public GameObject startGUI, levelGUI, storeGUI, pointTally, creditsGUI;
 	
 	void Awake() {
 		GameManager.GameStart += StartGame;
@@ -15,6 +15,7 @@ public class CameraManager : MonoBehaviour {
 		GameManager.LevelComplete += EndLevel;
 		GameManager.StoreOpen += OpenStore;
 		GameManager.StoreClosed += CloseStore;
+		GameManager.CreditsOpen += OpenCredits;
 	}
 	
 	// Use this for initialization
@@ -36,6 +37,7 @@ public class CameraManager : MonoBehaviour {
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
@@ -47,6 +49,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
+		creditsCam.enabled = false;
 		
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
@@ -62,6 +65,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(true);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
+		creditsCam.enabled = false;
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
@@ -77,6 +81,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(true);
+		creditsCam.enabled = false;
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
@@ -92,6 +97,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(true);
 		pointTally.SetActive(false);
+		creditsCam.enabled = false;
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = false;
@@ -111,11 +117,29 @@ public class CameraManager : MonoBehaviour {
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
 		AlignAudio(startMenuCam);
 	}
+	
+	private void OpenCredits() {
+		startGUI.SetActive(false);
+		levelGUI.SetActive(false);
+		storeGUI.SetActive(false);
+		pointTally.SetActive(false);
+		
+		startMenuCam.enabled = false;
+		mainLevelCam.enabled = false;
+		unlockStoreCam.enabled = false;
+		creditsCam.enabled = true;
+		
+		sceneLight.enabled = true;
+		
+		AlignAudio(creditsCam);
+	}
+	
 	
 	private void AlignAudio (Camera activeCamera) {
 		audioListener.parent = activeCamera.transform;

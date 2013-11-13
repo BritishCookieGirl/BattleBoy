@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 	public static event TimeEventHandler TimeChanged;
 	
 	public delegate void GameEvent();
-	public static event GameEvent GameStart, GameOver, LevelStart, LevelComplete, StoreOpen, StoreClosed;
+	public static event GameEvent GameStart, GameOver, LevelStart, LevelComplete, StoreOpen, StoreClosed, CreditsOpen;
 
 	//End Events Declarations
 
@@ -65,6 +65,13 @@ public class GameManager : MonoBehaviour
 		if (GameStart != null) {
 			print ("GameStart Event Dispatched");
 			GameStart();
+		}
+	}
+	
+	public static void TriggerCreditsStart() {
+		if (CreditsOpen != null) {
+			print ("CreditsOpen Event Dispatched");
+			CreditsOpen();
 		}
 	}
 	

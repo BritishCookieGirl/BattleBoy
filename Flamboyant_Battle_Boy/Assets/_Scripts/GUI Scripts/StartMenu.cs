@@ -70,12 +70,13 @@ private bool showStartMenu = true;
 	
 	private void QuitClicked() {
 		//Quit Game
+		Application.Quit();
 		
 	}
 
 	private void CreditsClicked() {
 		//Start Credits
-		
+		GameManager.TriggerCreditsStart();
 	}
 	
 
