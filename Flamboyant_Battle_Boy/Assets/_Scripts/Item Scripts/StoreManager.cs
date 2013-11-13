@@ -4,12 +4,15 @@ using System.Collections;
 public class StoreManager : MonoBehaviour
 {
 	
-	private float height = 250;
+	private float height = 240;
 	private float width = 400;
+	private int score;
 	private bool windowOpen;
 	private bool errorOpen;
 	private GameObject player;
+	
 	public UnlockableItem displayItem;
+		
 	public GUIStyle windowStyle;
 	public GUIStyle itemNameStyle;
 	public GUIStyle itemPointStyle;
@@ -19,19 +22,22 @@ public class StoreManager : MonoBehaviour
 	public GUIStyle buttonStyle;
 	public GUIStyle errorStyle;
 	public GUIStyle errorStyleText;
-	public Rect windowRect, errorRect;
+	public GUIStyle itemHeaderStyle, itemHeaderShaddowStyle;
+	public GUIStyle scoreStyle, scoreShaddowStyle, pointShaddow1, pointShaddow2;
+	public GUIStyle maskStyle;
 	
-	private delegate void UnlockAbility();
-	private UnlockAbility[] abilityMethods;
+	private Rect windowRect, errorRect;
+
 	private int abilityIndex, comboIndex, accesoryIndex;
-	
+	private UnlockAbility[] abilityMethods;
 	public UnlockableItem[] weapons, clothes, accesories;
-	
+	private delegate void UnlockAbility();
 	
 	void Awake ()
 	{
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;
+		ScoreManager.ScoreChanged += UpdateScore;
 	}
 		
 	void Start ()
@@ -46,18 +52,39 @@ public class StoreManager : MonoBehaviour
 		abilityIndex = 0;
 		
 		player = GameObject.FindGameObjectWithTag ("Player");
-		windowRect = new Rect ((Screen.width / 2 - width / 2), 20, width, height);
-		errorRect = new Rect ((Screen.width / 2 - width / 2), 20, width, height);	
+		windowRect = new Rect ((Screen.width / 2 - width / 2), 200, width, height);
+		errorRect = new Rect ((Screen.width / 2 - width / 2), 200, width, height);	
 	}
     
 	void OnGUI ()
-	{
+	{	
 		
-		if (GUI.Button (new Rect (0, 0, 200, 50), "Back", buttonStyle)) {
+		GUI.Label(new Rect(20,5,0,0),"Score:",scoreShaddowStyle);
+		GUI.Label(new Rect(250,5,20,75),score.ToString(),pointShaddow1);
+		GUI.Label(new Rect(250,5,20,75),score.ToString(),pointShaddow2);
+		
+		GUI.Label(new Rect(20,5,0,0),"Score:",scoreStyle);
+		GUI.Label(new Rect(250,5,20,75),score.ToString(),scoreStyle);
+		
+		GUI.Label(new Rect(13,130,0,0),"Weapon",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(10,260,0,0),"Clothing",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(80,380,0,0),"Flair",itemHeaderShaddowStyle);
+		
+		GUI.Label(new Rect(13,130,0,0),"Weapon",itemHeaderStyle);
+		GUI.Label(new Rect(10,260,0,0),"Clothing",itemHeaderStyle);
+		GUI.Label(new Rect(80,380,0,0),"Flair",itemHeaderStyle);
+		
+		
+		if (GUI.Button (new Rect (560, 510, 225, 75), "", buttonStyle)) {
 			BackToGame ();
 		}
 		
+		GUI.Label(new Rect(624,515,221,75),"Back",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(624,515,221,75),"Back",itemHeaderStyle);
+		
+		
 		if (windowOpen) {
+			GUI.Box(new Rect(0,0,Screen.width+10, Screen.height+10),"",maskStyle);
 			windowRect = GUI.Window (0, windowRect, ItemWindow, "", windowStyle);
 		}
 		
@@ -69,31 +96,37 @@ public class StoreManager : MonoBehaviour
 	private void ItemWindow (int windowID)
 	{
 		GUI.Label (new Rect (15, 15, 130, 130), displayItem.unlockedTexture);
-		GUI.Label (new Rect (165, 10, 200, 100), displayItem.itemName, itemNameStyle);
-		GUI.Label (new Rect (150, 35, 200, 5), "************************", dividerStyle);
-		GUI.Label (new Rect (155, 50, 200, 100), displayItem.PointString (), itemPointStyle);
-		GUI.Label (new Rect (155, 75, 200, 100), displayItem.itemEffect, itemEffectStyle);
 		
-		if (GUI.Button (new Rect (150, 110, 100, 35), "Buy", buttonStyle)) {
+		GUI.Label (new Rect (125, 0, 200, 100), displayItem.itemName, itemNameStyle);
+		//GUI.Label (new Rect (122, 100, 200, 5), "************************", dividerStyle);
+		GUI.Label (new Rect (175, 60, 200, 100), displayItem.PointString (), itemPointStyle);
+		GUI.Label (new Rect (10, 115, 400, 5), displayItem.itemEffect, itemEffectStyle);
+		
+		if (GUI.Button (new Rect (9, 155, 185, 75), "", buttonStyle)) {
 			BuyClicked ();
 		}
-		if (GUI.Button (new Rect (260, 110, 130, 35), "Cancel", buttonStyle)) {
+		GUI.Label(new Rect(61, 158, 205, 75),"Buy",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(61, 158, 205, 75),"Buy",itemHeaderStyle);
+		
+		if (GUI.Button (new Rect (201, 155, 185, 75), "", buttonStyle)) {
 			CancelClicked ();
 		}
+		GUI.Label(new Rect(226, 158, 205, 75),"Cancel",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(226, 158, 205, 75),"Cancel",itemHeaderStyle);
 		
-		GUI.Label (new Rect (10, 155, 200, 5), "**************************************", dividerStyle);
-		GUI.Label (new Rect (20, 175, 370, 100), displayItem.itemDescription, itemDescriptionStyle);
 	}
 	
 	private void ErrorWindow (int windowID)
 	{
 		string errorText = "You are much too bland and boring to posess this item. Maintain vigilance in your holy quest and perhaps one day you shall be worthy of weilding the grandeur item that is currently the object of your affection.";
 		GUI.Label (new Rect (10, 15, width - 30, 30), "INSUFFICIENT FABULOUSNESS", errorStyle);
-		GUI.Label (new Rect (5, 50, width - 30, 5), "***************************************", errorStyle);
-		GUI.Label (new Rect (15, 75, width - 30, 100), errorText, errorStyleText);
-		if (GUI.Button (new Rect (130, 200, 140, 35), "Continue", buttonStyle)) {
+		GUI.Label (new Rect (10, 25, width - 30, 5), "______________________", errorStyle);
+		GUI.Label (new Rect (10, 70, width - 30, 100), errorText, errorStyleText);
+		if (GUI.Button (new Rect (190, 170, 200, 60), "Continue", buttonStyle)) {
 			ContinueClicked ();
 		}
+		GUI.Label(new Rect(200, 170, 200, 60),"Continue",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(200, 170, 200, 60),"Continue",itemHeaderStyle);
 	}
 	
 	private void BuyClicked ()
@@ -192,6 +225,11 @@ public class StoreManager : MonoBehaviour
 	}
 	private void AbilityUnlock5() {
 		//player.GetComponent<CharacterController2D> ().SextJumpEnabled = true;
+	}
+	
+	private void UpdateScore(int newScore) {
+		print("getting new score of: " + newScore);
+		score = newScore;
 	}
 	
 }

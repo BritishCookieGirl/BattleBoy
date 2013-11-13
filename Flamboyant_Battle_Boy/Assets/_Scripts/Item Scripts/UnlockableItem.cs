@@ -63,7 +63,9 @@ public class UnlockableItem : MonoBehaviour {
 	
 	void OnMouseExit() {
 		//renderer.material.mainTexture = lockedTexture;
-		renderer.material.color = normalColor;
+		if (!purchased) {
+			renderer.material.color = normalColor;
+		}
 	}
 	
 	void OnMouseDown() {

@@ -12,7 +12,9 @@ public static class ScoreManager {
 	static ScoreManager() {
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;
+		GameManager.StoreOpen += StoreOpen;
 	}
+
 
 	// Calculates score and raises event after score changes
 	public static void AddToScore (int points) {
@@ -28,7 +30,7 @@ public static class ScoreManager {
 	public static void UpdateScore (int points) {
 				
 		if (ScoreChanged != null) {
-			ScoreChanged(score);	
+			ScoreChanged(points);	
 		}
 	}
 	
@@ -41,7 +43,7 @@ public static class ScoreManager {
 		totalScore -= points;
 		
 		if (ScoreChanged != null) {
-			ScoreChanged(score);	
+			ScoreChanged(totalScore);	
 		}
 		
 		return true;
@@ -74,7 +76,11 @@ public static class ScoreManager {
 	}
 	
 	private static void LevelComplete() {
-		
+
 	}
 	
+	private static void StoreOpen() {
+		MonoBehaviour.print("score updating at store open to: " + totalScore);
+		UpdateScore(totalScore);
+	}
 }
