@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		bonusTime = 100;
+		bonusTime = 30;
 		levelRunning = false;
 		bonusEndTime = bonusTime;
 		TriggerGameStart ();
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
 		// Check for remaining time in level
 		if (levelRunning && remainingTime < 0) {
 			//print ("out of time!");
-			TriggerLevelComplete ();
+			//TriggerLevelComplete ();
 		}
 
 		// Fire time event with current time

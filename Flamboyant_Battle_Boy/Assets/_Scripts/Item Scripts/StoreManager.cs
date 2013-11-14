@@ -59,28 +59,28 @@ public class StoreManager : MonoBehaviour
 	void OnGUI ()
 	{	
 		
-		GUI.Label(new Rect(20,5,0,0),"Score:",scoreShaddowStyle);
-		GUI.Label(new Rect(250,5,20,75),score.ToString(),pointShaddow1);
-		GUI.Label(new Rect(250,5,20,75),score.ToString(),pointShaddow2);
+		GUI.Label(new Rect(20,20,0,0),"Score:",scoreShaddowStyle);
+		GUI.Label(new Rect(250,20,20,75),score.ToString(),pointShaddow1);
+		GUI.Label(new Rect(250,20,20,75),score.ToString(),pointShaddow2);
 		
-		GUI.Label(new Rect(20,5,0,0),"Score:",scoreStyle);
-		GUI.Label(new Rect(250,5,20,75),score.ToString(),scoreStyle);
+		GUI.Label(new Rect(20,20,0,0),"Score:",scoreStyle);
+		GUI.Label(new Rect(250,20,20,75),score.ToString(),scoreStyle);
 		
-		GUI.Label(new Rect(13,130,0,0),"Weapon",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(10,260,0,0),"Clothing",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(80,380,0,0),"Flair",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(43,115,0,0),"Weapon",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(15,245,0,0),"Clothing",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(83,373,0,0),"Flair",itemHeaderShaddowStyle);
 		
-		GUI.Label(new Rect(13,130,0,0),"Weapon",itemHeaderStyle);
-		GUI.Label(new Rect(10,260,0,0),"Clothing",itemHeaderStyle);
-		GUI.Label(new Rect(80,380,0,0),"Flair",itemHeaderStyle);
+		GUI.Label(new Rect(43,115,0,0),"Weapon",itemHeaderStyle);
+		GUI.Label(new Rect(15,245,0,0),"Clothing",itemHeaderStyle);
+		GUI.Label(new Rect(83,373,0,0),"Flair",itemHeaderStyle);
 		
 		
 		if (GUI.Button (new Rect (560, 510, 225, 75), "", buttonStyle)) {
 			BackToGame ();
 		}
 		
-		GUI.Label(new Rect(624,515,221,75),"Back",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(624,515,221,75),"Back",itemHeaderStyle);
+		GUI.Label(new Rect(595,518,221,75),"Continue",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(595,518,221,75),"Continue",itemHeaderStyle);
 		
 		
 		if (windowOpen) {
@@ -105,14 +105,14 @@ public class StoreManager : MonoBehaviour
 		if (GUI.Button (new Rect (9, 155, 185, 75), "", buttonStyle)) {
 			BuyClicked ();
 		}
-		GUI.Label(new Rect(61, 158, 205, 75),"Buy",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(61, 158, 205, 75),"Buy",itemHeaderStyle);
+		GUI.Label(new Rect(71, 163, 205, 75),"Buy",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(71, 163, 205, 75),"Buy",itemHeaderStyle);
 		
 		if (GUI.Button (new Rect (201, 155, 185, 75), "", buttonStyle)) {
 			CancelClicked ();
 		}
-		GUI.Label(new Rect(226, 158, 205, 75),"Cancel",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(226, 158, 205, 75),"Cancel",itemHeaderStyle);
+		GUI.Label(new Rect(236, 163, 205, 75),"Cancel",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(236, 163, 205, 75),"Cancel",itemHeaderStyle);
 		
 	}
 	
@@ -125,8 +125,8 @@ public class StoreManager : MonoBehaviour
 		if (GUI.Button (new Rect (190, 170, 200, 60), "Continue", buttonStyle)) {
 			ContinueClicked ();
 		}
-		GUI.Label(new Rect(200, 170, 200, 60),"Continue",itemHeaderShaddowStyle);
-		GUI.Label(new Rect(200, 170, 200, 60),"Continue",itemHeaderStyle);
+		GUI.Label(new Rect(215, 170, 200, 60),"Continue",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(215, 170, 200, 60),"Continue",itemHeaderStyle);
 	}
 	
 	private void BuyClicked ()

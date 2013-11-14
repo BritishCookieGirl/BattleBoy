@@ -58,12 +58,12 @@ public class PointTally : MonoBehaviour {
 		GUI.Label(new Rect(330, 60, 100, 20), enemiesD.ToString(), pointStyle);
 		GUI.Label(new Rect(20, 120, 100, 20), "Time Bonus", itemStyle);
 		GUI.Label(new Rect(330, 120, 100, 20), timeD.ToString(), pointStyle);
-		GUI.Label(new Rect(20, 150,300,20), "************************************", seperatorStyle);
+		GUI.Label(new Rect(20, 150,300,20), "_________________________", seperatorStyle);
 		GUI.Label(new Rect(20, 180, 100, 20), "Level Total", itemStyle);
 		GUI.Label(new Rect(330, 180, 100, 20), levelD.ToString(), pointStyle);
 		GUI.Label(new Rect(20, 240, 100, 20), "Previous Score", itemStyle);
 		GUI.Label(new Rect(330, 240, 100, 20), previousD.ToString(), pointStyle);
-		GUI.Label(new Rect(20, 270,300,20), "************************************", seperatorStyle);
+		GUI.Label(new Rect(20, 270,300,20), "_________________________", seperatorStyle);
 		GUI.Label(new Rect(20, 300, 100, 20), "Total Score", totalStyle);
 		GUI.Label(new Rect(330, 300, 100, 20), totalD.ToString(), pointStyle);
 		
