@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
 	public int health = 100;
 	public int defense = 0;
 	public int pointValue = 100;
+	public ParticleSystem deathRainbows;
 
 
     private CharacterController character;
@@ -86,6 +87,7 @@ public class Enemy : MonoBehaviour
 		if (health <= 0) {
 			ScoreManager.AddToScore(pointValue);
 			Destroy(gameObject);
+			deathRainbows.Play();
 		}
 		ScoreManager.AddToScore(damageTaken);
 
