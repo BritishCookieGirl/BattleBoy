@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 	public int defense = 0;
 	public int pointValue = 100;
 	public ParticleSystem deathRainbows;
+	public TextMesh healthCounter;
 
 
     private CharacterController character;
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+		
         character = this.GetComponent<CharacterController>();
         impact = Vector3.zero;
 	//transform.parent = GameObject.Find("Enemy Spawn").transform;
@@ -73,21 +75,21 @@ public class Enemy : MonoBehaviour
 	// Called Automatically anytime level starts - set default variables here
 	private void LevelStart() {
 		canMove = true;	
+		deathRainbows.Stop();
 	}
 	
 	// Called automatically anytime level finishes - set win/lose conditions here
 	private void LevelComplete() {
-		Destroy(gameObject);	
+		Die ();	
 	}
 	
 	// Use by external objects to apply damage to enemy instance
 	public void ReceiveDamage(string attackType, int attackStrength) {
 		int damageTaken = attackStrength - defense;
 		health -= damageTaken;
+		healthCounter.text = health.ToString();
 		if (health <= 0) {
-			ScoreManager.AddToScore(pointValue);
-			Destroy(gameObject);
-			deathRainbows.Play();
+			Die ();
 		}
 		ScoreManager.AddToScore(damageTaken);
 
@@ -99,5 +101,12 @@ public class Enemy : MonoBehaviour
 		GameManager.LevelComplete -= LevelComplete;
 	}
 	
+	public void Die() {
+		ScoreManager.AddToScore(pointValue);
+		deathRainbows.Play();
+		Destroy(gameObject,3);
+		gameObject.collider.enabled = false;
+		gameObject.renderer.enabled = false;
+	}
 	
 }

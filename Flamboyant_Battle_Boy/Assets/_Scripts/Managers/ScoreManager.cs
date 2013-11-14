@@ -80,7 +80,6 @@ public static class ScoreManager {
 	}
 	
 	private static void StoreOpen() {
-		MonoBehaviour.print("score updating at store open to: " + totalScore);
 		UpdateScore(totalScore);
 	}
 }
