@@ -55,7 +55,10 @@ public class UnlockableItem : MonoBehaviour {
 		if (canClick && !purchased) {
 			renderer.material.color = hoverColor;
 
+<<<<<<< HEAD
             Camera.main.SendMessage("PlaySoundEffect", "MenuButtonOver");
+=======
+>>>>>>> 80aef708c735f1b411be28754c334fde03a6fb15
             //Camera.main.SendMessage("PlaySoundEffect", "MenuButtonOver");
             GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>().PlaySoundEffect("MenuButtonOver");
 			//audio.Play();
@@ -81,7 +84,11 @@ public class UnlockableItem : MonoBehaviour {
 			GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect","MenuButtonSelect");
             //Camera.main.SendMessage("PlaySoundEffect", "MenuButtonSelect");
 
+<<<<<<< HEAD
             Camera.main.SendMessage("PlaySoundEffect", "MenuButtonSelect");
+=======
+            //Camera.main.SendMessage("PlaySoundEffect", "MenuButtonSelect");
+>>>>>>> 80aef708c735f1b411be28754c334fde03a6fb15
             GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>().PlaySoundEffect("MenuButtonSelect");
 			//audio.clip = selectedSound;
 			//audio.Play();
