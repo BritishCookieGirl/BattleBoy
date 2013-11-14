@@ -228,7 +228,6 @@ public class StoreManager : MonoBehaviour
 	}
 	
 	private void UpdateScore(int newScore) {
-		print("getting new score of: " + newScore);
 		score = newScore;
 	}
 	

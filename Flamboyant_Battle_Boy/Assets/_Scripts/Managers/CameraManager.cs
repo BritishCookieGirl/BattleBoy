@@ -33,6 +33,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
@@ -50,6 +51,7 @@ public class CameraManager : MonoBehaviour {
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
 		creditsCam.enabled = false;
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
@@ -66,6 +68,7 @@ public class CameraManager : MonoBehaviour {
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
 		creditsCam.enabled = false;
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
@@ -82,6 +85,7 @@ public class CameraManager : MonoBehaviour {
 		storeGUI.SetActive(false);
 		pointTally.SetActive(true);
 		creditsCam.enabled = false;
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
@@ -98,6 +102,7 @@ public class CameraManager : MonoBehaviour {
 		storeGUI.SetActive(true);
 		pointTally.SetActive(false);
 		creditsCam.enabled = false;
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = false;
@@ -113,6 +118,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
+		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
@@ -129,6 +135,7 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
+		creditsGUI.SetActive(true);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = false;

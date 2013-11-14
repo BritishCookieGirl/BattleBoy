@@ -76,7 +76,6 @@ public class Enemy : MonoBehaviour
 	
 	// Called automatically anytime level finishes - set win/lose conditions here
 	private void LevelComplete() {
-		print ("destroying enemey");
 		Destroy(gameObject);	
 	}
 	
