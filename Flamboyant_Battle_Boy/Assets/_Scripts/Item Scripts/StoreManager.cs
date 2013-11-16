@@ -60,11 +60,11 @@ public class StoreManager : MonoBehaviour
 	{	
 		
 		GUI.Label(new Rect(20,20,0,0),"Score:",scoreShaddowStyle);
-		GUI.Label(new Rect(250,20,20,75),score.ToString(),pointShaddow1);
-		GUI.Label(new Rect(250,20,20,75),score.ToString(),pointShaddow2);
+		GUI.Label(new Rect(250,20,20,75),score.ToString("#,#"),pointShaddow1);
+		GUI.Label(new Rect(250,20,20,75),score.ToString("#,#"),pointShaddow2);
 		
 		GUI.Label(new Rect(20,20,0,0),"Score:",scoreStyle);
-		GUI.Label(new Rect(250,20,20,75),score.ToString(),scoreStyle);
+		GUI.Label(new Rect(250,20,20,75),score.ToString("#,#"),scoreStyle);
 		
 		GUI.Label(new Rect(43,115,0,0),"Weapon",itemHeaderShaddowStyle);
 		GUI.Label(new Rect(15,245,0,0),"Clothing",itemHeaderShaddowStyle);
@@ -73,6 +73,14 @@ public class StoreManager : MonoBehaviour
 		GUI.Label(new Rect(43,115,0,0),"Weapon",itemHeaderStyle);
 		GUI.Label(new Rect(15,245,0,0),"Clothing",itemHeaderStyle);
 		GUI.Label(new Rect(83,373,0,0),"Flair",itemHeaderStyle);
+		
+		
+		if (GUI.Button (new Rect (20, 510, 225, 75), "", buttonStyle)) {
+			BackToStart ();
+		}
+		
+		GUI.Label(new Rect(42,518,221,75),"Main Menu",itemHeaderShaddowStyle);
+		GUI.Label(new Rect(42,518,221,75),"Main Menu",itemHeaderStyle);
 		
 		
 		if (GUI.Button (new Rect (560, 510, 225, 75), "", buttonStyle)) {
@@ -193,6 +201,14 @@ public class StoreManager : MonoBehaviour
 	private void BackToGame ()
 	{
 		GameManager.TriggerStoreClosed ();
+		GameManager.TriggerLevelStart ();
+		
+	}
+	
+	private void BackToStart ()
+	{
+		GameManager.TriggerStoreClosed();
+		GameManager.TriggerGameStart();
 	}
 	
 	private void LevelStart ()

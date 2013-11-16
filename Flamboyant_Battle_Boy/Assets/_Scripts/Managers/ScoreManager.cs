@@ -5,14 +5,22 @@ public static class ScoreManager {
 	
 	public static int score; 
 	public static int totalScore;
+	private static int threshold = 500;
+	private static int level = 1;
+	private static int winScore = 10000;
 	
 	public delegate void PointEventHandler(int points);
 	public static event PointEventHandler ScoreChanged;
+	public static event PointEventHandler ThresholdReached;
+	public static event PointEventHandler WinReached;
+	
 	
 	static ScoreManager() {
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;
 		GameManager.StoreOpen += StoreOpen;
+		
+		
 	}
 
 
@@ -24,6 +32,16 @@ public static class ScoreManager {
 		
 		score += points;
 		UpdateScore(score);		
+		
+		if (score >= threshold) {
+			
+			if (ThresholdReached != null) {
+				ThresholdReached(level);
+			}
+			
+			level++;
+			threshold += 500;
+		}
 		
 	}
 	
@@ -52,6 +70,8 @@ public static class ScoreManager {
 	// Manually reset score 
 	public static void ResetScore() {
 		score = 0;
+		threshold = 500;
+		level = 1;
 		
 		if (ScoreChanged != null) {
 			ScoreChanged(score);	
@@ -67,6 +87,10 @@ public static class ScoreManager {
 		totalScore += score;
 		
 		UpdateScore(totalScore);
+		
+		if (totalScore >= winScore && WinReached != null) {
+			WinReached(totalScore);
+		}
 		
 		return totalScore;
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraManager : MonoBehaviour {
 	
-	public Camera startMenuCam, mainLevelCam, unlockStoreCam, creditsCam;
+	public Camera startMenuCam, mainLevelCam, unlockStoreCam, creditsCam, winCam;
 	public Light sceneLight;
 	public Transform audioListener;
 	public GameObject startGUI, levelGUI, storeGUI, pointTally, creditsGUI;
@@ -16,6 +16,7 @@ public class CameraManager : MonoBehaviour {
 		GameManager.StoreOpen += OpenStore;
 		GameManager.StoreClosed += CloseStore;
 		GameManager.CreditsOpen += OpenCredits;
+		GameManager.GameWon += WinGame;
 	}
 	
 	// Use this for initialization
@@ -39,6 +40,7 @@ public class CameraManager : MonoBehaviour {
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
 		creditsCam.enabled = false;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
@@ -50,12 +52,13 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
-		creditsCam.enabled = false;
 		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = true;
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
@@ -67,12 +70,13 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(true);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
-		creditsCam.enabled = false;
 		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
 		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
@@ -84,12 +88,13 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(true);
-		creditsCam.enabled = false;
 		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = true;
 		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
@@ -101,12 +106,13 @@ public class CameraManager : MonoBehaviour {
 		levelGUI.SetActive(false);
 		storeGUI.SetActive(true);
 		pointTally.SetActive(false);
-		creditsCam.enabled = false;
 		creditsGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = true;
+		winCam.enabled = false;
+		creditsCam.enabled = false;
 		
 		sceneLight.enabled = true;
 		
@@ -114,20 +120,22 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	private void CloseStore() {
-		startGUI.SetActive(true);
-		levelGUI.SetActive(false);
+		startGUI.SetActive(false);
+		levelGUI.SetActive(true);
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
 		creditsGUI.SetActive(false);
 		
-		startMenuCam.enabled = true;
-		mainLevelCam.enabled = false;
+		startMenuCam.enabled = false;
+		mainLevelCam.enabled = true;
 		unlockStoreCam.enabled = false;
 		creditsCam.enabled = false;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
-		AlignAudio(startMenuCam);
+		GameManager.TriggerLevelStart();
+		AlignAudio(mainLevelCam);
 	}
 	
 	private void OpenCredits() {
@@ -141,10 +149,29 @@ public class CameraManager : MonoBehaviour {
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
 		creditsCam.enabled = true;
+		winCam.enabled = false;
 		
 		sceneLight.enabled = true;
 		
 		AlignAudio(creditsCam);
+	}
+	
+	private void WinGame() {
+		startGUI.SetActive(false);
+		levelGUI.SetActive(false);
+		storeGUI.SetActive(false);
+		pointTally.SetActive(false);
+		creditsGUI.SetActive(false);
+		
+		startMenuCam.enabled = false;
+		mainLevelCam.enabled = false;
+		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
+		winCam.enabled = true;
+		
+		sceneLight.enabled = false;
+		
+		AlignAudio(creditsCam);	
 	}
 	
 	

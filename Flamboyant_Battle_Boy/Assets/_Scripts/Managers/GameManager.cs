@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour
 	public static event TimeEventHandler TimeChanged;
 	
 	public delegate void GameEvent();
-	public static event GameEvent GameStart, GameOver, LevelStart, LevelComplete, StoreOpen, StoreClosed, CreditsOpen;
-
+	public static event GameEvent GameStart, GameOver, GameWon; 
+	public static event GameEvent LevelStart, LevelComplete;
+	public static event GameEvent StoreOpen, StoreClosed, CreditsOpen;
+	
+	private static bool victory;
 	//End Events Declarations
 
 	void Awake ()
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
 	{
 		bonusTime = 30;
 		levelRunning = false;
+		victory = false;
 		bonusEndTime = bonusTime;
 		TriggerGameStart ();
 	}
@@ -47,7 +51,8 @@ public class GameManager : MonoBehaviour
 	{
 
 		currentTime = time;
-		remainingTime = bonusEndTime - currentTime;
+		
+		remainingTime = Mathf.Clamp(bonusEndTime - currentTime, 0, bonusEndTime);
 
 		// Check for remaining time in level
 		if (levelRunning && remainingTime < 0) {
@@ -63,14 +68,14 @@ public class GameManager : MonoBehaviour
 	
 	public static void TriggerGameStart() {
 		if (GameStart != null) {
-			//print ("GameStart Event Dispatched");
+			print ("GameStart Event Dispatched");
 			GameStart();
 		}
 	}
 	
 	public static void TriggerCreditsStart() {
 		if (CreditsOpen != null) {
-			//print ("CreditsOpen Event Dispatched");
+			print ("CreditsOpen Event Dispatched");
 			CreditsOpen();
 		}
 	}
@@ -82,7 +87,7 @@ public class GameManager : MonoBehaviour
 		levelRunning = true;
 		
 		if (LevelStart != null) {
-			//print ("LevelStart Event Dispatched");
+			print ("LevelStart Event Dispatched");
 			LevelStart();	
 		}
 	}
@@ -94,15 +99,16 @@ public class GameManager : MonoBehaviour
 		levelRunning = false;
 		
 		if (LevelComplete != null) {
-			//print ("LevelComplete Event Dispatched");
+			print ("LevelComplete Event Dispatched");
 			LevelComplete();	
 		}
+
 	}
 	
 	public static void TriggerStoreActive() {
 		
 		if (StoreOpen != null) {
-			//print ("StoreOpen Event Dispatched");
+			print ("StoreOpen Event Dispatched");
 			StoreOpen();	
 		}
 	}
@@ -110,8 +116,14 @@ public class GameManager : MonoBehaviour
 	public static void TriggerStoreClosed() {
 		
 		if (StoreClosed != null) {
-			//print ("StoreClosed Event Dispatched");
+			print ("StoreClosed Event Dispatched");
 			StoreClosed();	
+		}
+	}
+	
+	public static void TriggerWinGame() {
+		if (GameWon != null) {
+			GameWon();
 		}
 	}
 
@@ -126,5 +138,6 @@ public class GameManager : MonoBehaviour
 //	{
 //		endTime = Time.time;
 //	}
-
+	
+	
 }

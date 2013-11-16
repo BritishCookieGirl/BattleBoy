@@ -10,11 +10,11 @@ public class UnlockableItem : MonoBehaviour {
 	static bool canClick;
 	
 	public string itemName;
+	public Feature unlockFeature;
 	public string itemEffect;
 	public string itemDescription;
 	public int itemCost;
 	public bool unlocked, purchased;
-	public Feature unlockFeature;
 	
 	public Texture unlockedTexture;
 	public Texture lockedTexture;
