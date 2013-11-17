@@ -7,7 +7,7 @@ public static class ScoreManager {
 	public static int totalScore;
 	private static int threshold = 1000;
 	private static int level = 1;
-	private static int winScore = 10000;
+	private static int winScore = 100000;
 	
 	public delegate void PointEventHandler(int points);
 	public static event PointEventHandler ScoreChanged;

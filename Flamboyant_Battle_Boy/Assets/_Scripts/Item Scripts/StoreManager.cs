@@ -157,14 +157,17 @@ public class StoreManager : MonoBehaviour
 			switch (displayItem.UnlockFeature()) {
 			case UnlockableItem.Feature.Combo:
 				player.GetComponent<PlayerCombat> ().IncreaseComboLength ();
+				comboIndex++;
 				UnlockNextItem(comboIndex,weapons);
 				break;
 			case UnlockableItem.Feature.Ability:
 				abilityMethods[abilityIndex]();
+				abilityIndex++;
 				UnlockNextItem(abilityIndex,clothes);
 				break;
 			case UnlockableItem.Feature.Cosmetic:
 				fabMethods[accesoryIndex]();
+				accesoryIndex++;
 				UnlockNextItem(accesoryIndex,accesories);
 				break;
 			default:
@@ -172,7 +175,6 @@ public class StoreManager : MonoBehaviour
 			}
 
 			CloseWindow ();
-			print("close window called");
 			
 		} else {
 			errorOpen = true;
@@ -181,7 +183,6 @@ public class StoreManager : MonoBehaviour
 	}
 	
 	private void UnlockNextItem(int index, UnlockableItem[] itemList) {
-		index++;
 		if (index <= itemList.Length) {
 			itemList[index].UnlockIcon();
 		}
@@ -223,7 +224,6 @@ public class StoreManager : MonoBehaviour
 	private void BackToStart ()
 	{
 		GameManager.TriggerStoreClosed();
-		GameManager.TriggerGameStart();
 	}
 	
 	private void LevelStart ()

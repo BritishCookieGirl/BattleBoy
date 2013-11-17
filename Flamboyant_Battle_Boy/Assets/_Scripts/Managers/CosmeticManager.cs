@@ -74,6 +74,9 @@ public class CosmeticManager : MonoBehaviour {
 		AmbientParticles.Stop();
 		AmbientParticles.Clear();
 		
+		AmbientBurstParticles.Stop();
+		AmbientParticles.Clear();
+		
 		PlayerTrail.Stop();
 		PlayerTrail.Clear();
 	}

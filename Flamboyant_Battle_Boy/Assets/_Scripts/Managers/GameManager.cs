@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 	public delegate void GameEvent();
 	public static event GameEvent GameStart, GameOver, GameWon; 
 	public static event GameEvent LevelStart, LevelComplete;
-	public static event GameEvent StoreOpen, StoreClosed, CreditsOpen;
+	public static event GameEvent StoreOpen, StoreClosed, CreditsOpen, CreditsClose;
 	
 	private static bool victory;
 	//End Events Declarations
@@ -77,6 +77,13 @@ public class GameManager : MonoBehaviour
 		if (CreditsOpen != null) {
 			print ("CreditsOpen Event Dispatched");
 			CreditsOpen();
+		}
+	}
+	
+	public static void TriggerCreditsClose() {
+		if (CreditsClose != null) {
+			print ("CreditsOpen Event Dispatched");
+			CreditsClose();
 		}
 	}
 	

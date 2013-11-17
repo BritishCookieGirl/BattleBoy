@@ -36,6 +36,7 @@ public class EnemySpawner : MonoBehaviour
 	    spawnedEnemy = (Transform) Instantiate(enemy, transform.position, transform.rotation);
 		spawnedEnemy.GetComponentInChildren<EnemyAttack> ().spawnPoint = transform;
 		spawnedEnemy.GetComponentInChildren<Enemy> ().spawnPoint = transform;
+		spawnedEnemy.parent = transform;
 		needsSpawn = false;
 	
 	}

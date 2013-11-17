@@ -16,6 +16,7 @@ public class CameraManager : MonoBehaviour {
 		GameManager.StoreOpen += OpenStore;
 		GameManager.StoreClosed += CloseStore;
 		GameManager.CreditsOpen += OpenCredits;
+		GameManager.CreditsClose += CloseCredits;
 		GameManager.GameWon += WinGame;
 	}
 	
@@ -30,155 +31,92 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	private void StartGame() {
-		startGUI.SetActive(true);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
 		
-		startMenuCam.enabled = true;
-		mainLevelCam.enabled = false;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
+		ChangeCameras(startMenuCam,startGUI,false);
 		
-		sceneLight.enabled = false;
-		
-		AlignAudio(startMenuCam);
 	}
 	
 	private void EndGame() {
-		startGUI.SetActive(true);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
 		
-		startMenuCam.enabled = true;
-		mainLevelCam.enabled = false;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
+		ChangeCameras(startMenuCam,startGUI,false);
 		
-		sceneLight.enabled = false;
-		
-		AlignAudio(startMenuCam);
 	}
 	
 	private void StartLevel() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(true);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
+
+		ChangeCameras(mainLevelCam,levelGUI,false);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = true;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
-		
-		sceneLight.enabled = false;
-		
-		AlignAudio(mainLevelCam);
 	}
 	
 	private void EndLevel() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(true);
-		creditsGUI.SetActive(false);
+
+		ChangeCameras(mainLevelCam,pointTally,false);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = true;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
-		
-		sceneLight.enabled = false;
-		
-		AlignAudio(mainLevelCam);
 	}
 	
 	private void OpenStore() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(true);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
+
+		ChangeCameras(unlockStoreCam,storeGUI,true);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = false;
-		unlockStoreCam.enabled = true;
-		winCam.enabled = false;
-		creditsCam.enabled = false;
-		
-		sceneLight.enabled = true;
-		
-		AlignAudio(unlockStoreCam);
 	}
 	
 	private void CloseStore() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(true);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
+
+		ChangeCameras(mainLevelCam,levelGUI,false);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = true;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
-		
-		sceneLight.enabled = false;
-		
-		GameManager.TriggerLevelStart();
-		AlignAudio(mainLevelCam);
 	}
 	
 	private void OpenCredits() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(true);
+
+		ChangeCameras(creditsCam,creditsGUI,true);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = false;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = true;
-		winCam.enabled = false;
+	}
+	
+	private void CloseCredits() {
 		
-		sceneLight.enabled = true;
+		ChangeCameras(startMenuCam,startGUI,false);
 		
-		AlignAudio(creditsCam);
 	}
 	
 	private void WinGame() {
-		startGUI.SetActive(false);
-		levelGUI.SetActive(false);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
+
+		ChangeCameras(winCam,null,false);
 		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = false;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = true;
-		
-		sceneLight.enabled = false;
-		
-		AlignAudio(creditsCam);	
 	}
 	
 	
 	private void AlignAudio (Camera activeCamera) {
+		
 		audioListener.parent = activeCamera.transform;
 		audioListener.localPosition = Vector3.zero;
 		audioListener.localRotation = Quaternion.identity;
+		
+	}
+	
+	
+	private void ChangeCameras(Camera onCamera, GameObject onGUI, bool lightsNeeded) {
+		
+		startGUI.SetActive(false);
+		levelGUI.SetActive(false);
+		storeGUI.SetActive(false);
+		pointTally.SetActive(false);
+		creditsGUI.SetActive(false);
+		
+		startMenuCam.enabled = false;
+		mainLevelCam.enabled = false;
+		unlockStoreCam.enabled = false;
+		creditsCam.enabled = false;
+		winCam.enabled = false;
+		
+		sceneLight.enabled = false;
+		
+		onCamera.enabled = true;
+		AlignAudio(onCamera);
+		onGUI.SetActive(true);
+		
+		if (lightsNeeded) {
+			sceneLight.enabled = true;
+		}	
 	}
 	
 }

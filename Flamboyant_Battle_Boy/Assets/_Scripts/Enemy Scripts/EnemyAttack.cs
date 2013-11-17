@@ -11,13 +11,16 @@ public class EnemyAttack : MonoBehaviour {
 	public Transform pacePoint1, pacePoint2;
 	private bool point1;
 	public Transform spawnPoint;
-
+	//private bool attacking;
+	private float nextAttack, attackTime; 
+		
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
 		mood = transform.FindChild("Mood");
 		pacePoint1 = spawnPoint.transform.Find("PacePoint1");
 		pacePoint2 = spawnPoint.transform.Find("PacePoint2");
+		attackTime = 1.0f;
 	}
 	
 	// Update is called once per frame
@@ -44,6 +47,15 @@ public class EnemyAttack : MonoBehaviour {
 	private void Attack() {
 		//attack player
 		mood.renderer.material.color = Color.red;
+		
+		if (GameManager.currentTime > nextAttack) {
+			
+			//
+			//attack code here
+			//
+			
+			nextAttack = GameManager.currentTime + attackTime + Random.Range(0,3);
+		}
 		
 		Vector3 dest = new Vector3(
 			player.transform.position.x,

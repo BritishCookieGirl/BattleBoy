@@ -20,7 +20,7 @@ public class Credits : MonoBehaviour {
 	void OnGUI() {
 		
 		if (GUI.Button (new Rect (520, 450, 180, 75), "", buttonStyle)) {
-			GameManager.TriggerStoreClosed();
+			GameManager.TriggerCreditsClose();
 		}
 		
 		GUI.Label(new Rect(545,445,225,75), "Back",bTextShaddowStyle);
