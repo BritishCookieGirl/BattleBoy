@@ -40,6 +40,7 @@ public class CharacterController2D : MonoBehaviour
 
     void Awake()
     {
+		GameManager.GameStart += GameStart;
         GameManager.LevelStart += LevelStart;
         GameManager.LevelComplete += LevelComplete;
 
@@ -57,7 +58,12 @@ public class CharacterController2D : MonoBehaviour
         TripleJumpEnabled = true;
         // END TESTING
     }
-
+	
+	private void GameStart() {
+		DoubleJumpEnabled = false;
+		TripleJumpEnabled = false;
+	}
+	
     // Called Automatically anytime level starts - set default variables here
     private void LevelStart()
     {

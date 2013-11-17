@@ -92,7 +92,7 @@ public class EnemyAttack : MonoBehaviour {
 	}
 	
 	private void OnDestroy() {
-		//spawnPoint.GetComponent<EnemySpawner> ().needsSpawn = true;
+		//spawnPoint.GetComponent<EnemySpawner> ().RequestRespawn();
 	}
 }
 

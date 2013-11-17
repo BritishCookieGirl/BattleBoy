@@ -5,7 +5,7 @@ public static class ScoreManager {
 	
 	public static int score; 
 	public static int totalScore;
-	private static int threshold = 500;
+	private static int threshold = 1000;
 	private static int level = 1;
 	private static int winScore = 10000;
 	
@@ -40,7 +40,7 @@ public static class ScoreManager {
 			}
 			
 			level++;
-			threshold += 500;
+			threshold += 1000;
 		}
 		
 	}
@@ -53,7 +53,7 @@ public static class ScoreManager {
 	}
 	
 	public static bool PurchaseItem(int points) {
-		//score += 1000;
+		
 		if (totalScore < points) {
 			return false;
 		}
@@ -81,7 +81,7 @@ public static class ScoreManager {
 	// Calculations for end of game bonus points
 	public static int CalculateFinalScore() {
 		
-		int timeBonus = (int)GameManager.remainingTime * 100;
+		int timeBonus = (int)GameManager.remainingTime * 10;
 		
 		totalScore += timeBonus;
 		totalScore += score;

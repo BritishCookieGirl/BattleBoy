@@ -10,8 +10,11 @@ public class StoreManager : MonoBehaviour
 	private bool windowOpen;
 	private bool errorOpen;
 	private GameObject player;
+	public GameObject cosmeticManager;
 	
 	public UnlockableItem displayItem;
+	
+	
 		
 	public GUIStyle windowStyle;
 	public GUIStyle itemNameStyle;
@@ -29,7 +32,7 @@ public class StoreManager : MonoBehaviour
 	private Rect windowRect, errorRect;
 
 	private int abilityIndex, comboIndex, accesoryIndex;
-	private UnlockAbility[] abilityMethods;
+	private UnlockAbility[] abilityMethods, fabMethods;
 	public UnlockableItem[] weapons, clothes, accesories;
 	private delegate void UnlockAbility();
 	
@@ -50,6 +53,14 @@ public class StoreManager : MonoBehaviour
 			AbilityUnlock5			
 		};
 		abilityIndex = 0;
+		
+		fabMethods = new UnlockAbility[] {
+			FabUnlock1,
+			FabUnlock2,
+			FabUnlock3,
+			FabUnlock4,
+			FabUnlock5			
+		};
 		
 		player = GameObject.FindGameObjectWithTag ("Player");
 		windowRect = new Rect ((Screen.width / 2 - width / 2), 200, width, height);
@@ -146,18 +157,15 @@ public class StoreManager : MonoBehaviour
 			switch (displayItem.UnlockFeature()) {
 			case UnlockableItem.Feature.Combo:
 				player.GetComponent<PlayerCombat> ().IncreaseComboLength ();
-				comboIndex++;
-				weapons[comboIndex].UnlockIcon();
+				UnlockNextItem(comboIndex,weapons);
 				break;
 			case UnlockableItem.Feature.Ability:
 				abilityMethods[abilityIndex]();
-				abilityIndex++;
-				clothes[abilityIndex].UnlockIcon();
+				UnlockNextItem(abilityIndex,clothes);
 				break;
 			case UnlockableItem.Feature.Cosmetic:
-				print ("things are prettier now. deal.");
-				accesoryIndex++;
-				accesories[accesoryIndex].UnlockIcon();
+				fabMethods[accesoryIndex]();
+				UnlockNextItem(accesoryIndex,accesories);
 				break;
 			default:
 				break;
@@ -170,6 +178,13 @@ public class StoreManager : MonoBehaviour
 			errorOpen = true;
 		}
 		
+	}
+	
+	private void UnlockNextItem(int index, UnlockableItem[] itemList) {
+		index++;
+		if (index <= itemList.Length) {
+			itemList[index].UnlockIcon();
+		}
 	}
 	
 	private void CancelClicked ()
@@ -241,6 +256,25 @@ public class StoreManager : MonoBehaviour
 	}
 	private void AbilityUnlock5() {
 		//player.GetComponent<CharacterController2D> ().SextJumpEnabled = true;
+	}
+	
+	private void FabUnlock1() {
+		cosmeticManager.GetComponent<CosmeticManager>().enemyDeathUnlocked = true;
+	}
+	
+	private void FabUnlock2() {
+		cosmeticManager.GetComponent<CosmeticManager>().playerTrailUnlocked = true;
+	}
+	
+	private void FabUnlock3() {
+		
+	}
+	
+	private void FabUnlock4() {
+		
+	}
+	private void FabUnlock5() {
+		
 	}
 	
 	private void UpdateScore(int newScore) {

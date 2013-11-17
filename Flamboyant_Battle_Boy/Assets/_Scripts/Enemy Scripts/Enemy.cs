@@ -11,7 +11,10 @@ public class Enemy : MonoBehaviour
 	public int pointValue = 100;
 	public ParticleSystem deathRainbows;
 	public TextMesh healthCounter;
-
+	public Transform spawnPoint;
+	
+	public CosmeticManager cosmeticManager;
+	public bool particlesUnlocked;
 
     private CharacterController character;
 
@@ -23,6 +26,8 @@ public class Enemy : MonoBehaviour
 		GameManager.LevelStart += LevelStart;
 		GameManager.LevelComplete += LevelComplete;
 		
+		cosmeticManager = GameObject.Find("Cosmetics").GetComponent<CosmeticManager> ();
+		particlesUnlocked = cosmeticManager.enemyDeathUnlocked;
 	}
 	
 	// Use this for initialization
@@ -76,6 +81,7 @@ public class Enemy : MonoBehaviour
 	private void LevelStart() {
 		canMove = true;	
 		deathRainbows.Stop();
+		particlesUnlocked = cosmeticManager.enemyDeathUnlocked;
 	}
 	
 	// Called automatically anytime level finishes - set win/lose conditions here
@@ -90,8 +96,9 @@ public class Enemy : MonoBehaviour
 		healthCounter.text = health.ToString();
 		if (health <= 0) {
 			Die ();
+			spawnPoint.GetComponent<EnemySpawner> ().RequestRespawn();
 		}
-		ScoreManager.AddToScore(damageTaken);
+		ScoreManager.AddToScore(10);
 
 	}
 	
@@ -103,10 +110,14 @@ public class Enemy : MonoBehaviour
 	
 	public void Die() {
 		ScoreManager.AddToScore(pointValue);
-		deathRainbows.Play();
+		
+		if (particlesUnlocked) {
+			deathRainbows.Play();
+		}
+		
 		Destroy(gameObject,3);
 		gameObject.collider.enabled = false;
-		gameObject.renderer.enabled = false;
+		gameObject.renderer.enabled = false;;
 	}
 	
 }

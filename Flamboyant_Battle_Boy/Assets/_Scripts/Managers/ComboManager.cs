@@ -60,7 +60,7 @@ public static class ComboManager {
 	}
 	
 	private static void CalculateMultiplier() {
-		multiplier = Mathf.Clamp(currentCombo, 1, maxCombo);
+		multiplier = Mathf.Clamp(currentCombo, 1, maxCombo) ;
 	}
 	
 	private static void LevelStart() {

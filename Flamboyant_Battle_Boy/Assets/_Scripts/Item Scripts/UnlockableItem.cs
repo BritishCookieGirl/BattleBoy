@@ -12,7 +12,7 @@ public class UnlockableItem : MonoBehaviour {
 	public string itemName;
 	public Feature unlockFeature;
 	public string itemEffect;
-	public string itemDescription;
+	//public string itemDescription;
 	public int itemCost;
 	public bool unlocked, purchased;
 	

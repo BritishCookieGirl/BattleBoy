@@ -5,20 +5,29 @@ public class EnemySpawner : MonoBehaviour
 {
 
 	public Transform enemy;
-	public bool needsSpawn;
+	public bool respawnOnDeath;
+	private bool needsSpawn;
 	public Transform spawnedEnemy;
+	public float spawnDelay = 5;
+	private float nextSpawn;
 	
 
 
 	// Called before Start
 	void Awake() {
 		GameManager.LevelStart += LevelStart;
-		GameManager.LevelComplete += LevelComplete;		
+		GameManager.LevelComplete += LevelComplete;	
+		GameManager.GameStart += LevelComplete;
+	}
+	
+	void Start () {
+		needsSpawn = false;
 	}
 	
 	void Update() {
-		if (needsSpawn)
-		Spawn();
+		if (needsSpawn && (GameManager.currentTime >= nextSpawn)){
+			Spawn();
+		}
 	}
 
 	//Spawn new enemy from prefab
@@ -26,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
 	{
 	    spawnedEnemy = (Transform) Instantiate(enemy, transform.position, transform.rotation);
 		spawnedEnemy.GetComponentInChildren<EnemyAttack> ().spawnPoint = transform;
+		spawnedEnemy.GetComponentInChildren<Enemy> ().spawnPoint = transform;
 		needsSpawn = false;
 	
 	}
@@ -44,5 +54,12 @@ public class EnemySpawner : MonoBehaviour
 	{
 		needsSpawn = false;
 	}
-
+	
+	public void RequestRespawn() {
+		if(respawnOnDeath) {
+			needsSpawn = true;
+			nextSpawn = GameManager.currentTime + spawnDelay;
+			print ("next spawn at " + nextSpawn);
+		}
+	}
 }

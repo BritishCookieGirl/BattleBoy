@@ -6,6 +6,7 @@ public class CosmeticManager : MonoBehaviour {
 	public ParticleSystem AmbientParticles;
 	public ParticleSystem AmbientBurstParticles;
 	public ParticleSystem PlayerTrail;
+	public bool enemyDeathUnlocked, playerTrailUnlocked;
 	
 	void Awake () {
 		ScoreManager.ThresholdReached += makePretty;
@@ -26,25 +27,25 @@ public class CosmeticManager : MonoBehaviour {
 		
 		AmbientBurstParticles.Emit(1000);
 		
-		switch (level){
-			case 1:
-				Unlock1();
-				break;
-			case 2:
-				Unlock2();
-				break;
-			case 3:
-				Unlock3();
-				break;
-			case 4:
-				Unlock4();
-				break;
-			case 5:
-				Unlock5();
-				break;
-			default:
-				break;	
-		}
+//		switch (level){
+//			case 1:
+//				Unlock1();
+//				break;
+//			case 2:
+//				Unlock2();
+//				break;
+//			case 3:
+//				Unlock3();
+//				break;
+//			case 4:
+//				Unlock4();
+//				break;
+//			case 5:
+//				Unlock5();
+//				break;
+//			default:
+//				break;	
+//		}
 		
 	}
 	
