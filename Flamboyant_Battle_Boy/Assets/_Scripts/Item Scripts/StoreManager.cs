@@ -223,7 +223,7 @@ public class StoreManager : MonoBehaviour
 	
 	private void BackToStart ()
 	{
-		GameManager.TriggerStoreClosed();
+		GameManager.TriggerCreditsClose();
 	}
 	
 	private void LevelStart ()
