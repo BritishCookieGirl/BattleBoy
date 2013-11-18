@@ -43,27 +43,12 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	private void StartLevel() {
-<<<<<<< HEAD
 
 		ChangeCameras(mainLevelCam,levelGUI,false);
-=======
-		startGUI.SetActive(false);
-		levelGUI.SetActive(true);
-		storeGUI.SetActive(false);
-		pointTally.SetActive(false);
-		creditsGUI.SetActive(false);
-		
-		startMenuCam.enabled = false;
-		mainLevelCam.enabled = true;
-            mainLevelCam.orthographicSize = 4;
-            mainLevelCam.farClipPlane = 20;
-		unlockStoreCam.enabled = false;
-		creditsCam.enabled = false;
-		winCam.enabled = false;
-		
-		sceneLight.enabled = false;
->>>>>>> All Animations & Sound Fix
-		
+
+		mainLevelCam.orthographicSize = 4;
+		mainLevelCam.farClipPlane = 20;
+	
 	}
 	
 	private void EndLevel() {
