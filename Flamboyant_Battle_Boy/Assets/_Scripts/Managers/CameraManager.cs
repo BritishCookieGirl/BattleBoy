@@ -46,9 +46,9 @@ public class CameraManager : MonoBehaviour {
 
 		ChangeCameras(mainLevelCam,levelGUI,false);
 
-		mainLevelCam.orthographicSize = 4;
-		mainLevelCam.farClipPlane = 20;
-	
+        mainLevelCam.orthographicSize = 4;
+        mainLevelCam.farClipPlane = 20;
+
 	}
 	
 	private void EndLevel() {

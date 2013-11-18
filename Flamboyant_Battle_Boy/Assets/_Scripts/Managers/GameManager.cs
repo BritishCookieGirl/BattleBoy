@@ -79,14 +79,13 @@ public class GameManager : MonoBehaviour
 			CreditsOpen();
 		}
 	}
-
+	
 	public static void TriggerCreditsClose() {
 		if (CreditsClose != null) {
 			print ("CreditsOpen Event Dispatched");
 			CreditsClose();
 		}
 	}
-	
 	
 	public static void TriggerLevelStart()
     {	
