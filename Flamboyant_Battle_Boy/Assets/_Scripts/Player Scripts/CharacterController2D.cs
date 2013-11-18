@@ -287,6 +287,8 @@ public class CharacterController2D : MonoBehaviour
 
     void Update()
     {
+        HandleAnimations();
+
         Vector3 moveDirection = Vector3.zero;
 
         if (Input.GetButtonDown("Jump") && canControl && gameObject.tag == "Player")
@@ -378,6 +380,22 @@ public class CharacterController2D : MonoBehaviour
         if (hit.moveDirection.y < -0.9f && hit.normal.y > 0.9f)
         {
             activePlatform = hit.collider.transform;
+        }
+    }
+
+    void HandleAnimations()
+    {
+        if (this.gameObject.tag == "Player")
+        {
+            float h = Input.GetAxisRaw("Horizontal");
+            if (h != 0)
+            {
+                this.gameObject.GetComponent<PlayerCombat>().IsMoving = true;
+            }
+            else
+            {
+                this.gameObject.GetComponent<PlayerCombat>().IsMoving = false;
+            }
         }
     }
 

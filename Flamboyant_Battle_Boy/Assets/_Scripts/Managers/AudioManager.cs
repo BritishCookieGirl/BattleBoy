@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         bgmSource2 = this.gameObject.AddComponent<AudioSource>();
 
         bgmSource1.audio.volume = 1.0f;
-        bgmSource2.audio.volume = 0.0f;
+        bgmSource2.audio.volume = 1.0f;
 
         StartInterrupt("MainIntro");
 	}
@@ -49,7 +49,9 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator StartIntro(AudioClip intro, string mainPart)
     {
-        yield return new WaitForSeconds(intro.length);
+        Debug.Log("Waiting for song to finish in: " + (intro.length - fadeLength));
+        yield return new WaitForSeconds(intro.length - fadeLength);
+        Debug.Log("Starting Post-Intro Part");
 
         AudioClip mainLoop = (AudioClip)Resources.Load(bgmDict[mainPart], typeof(AudioClip));
 
@@ -59,7 +61,7 @@ public class AudioManager : MonoBehaviour
             bgmSource1.audio.Stop();
             bgmSource2.loop = true;
             bgmSource2.clip = mainLoop;
-            bgmSource2.audio.Play();
+            bgmSource2.Play();
             currentSourceActive = 2;
         }
         else
@@ -68,7 +70,7 @@ public class AudioManager : MonoBehaviour
             bgmSource2.audio.Stop();
             bgmSource1.loop = true;
             bgmSource1.clip = mainLoop;
-            bgmSource1.audio.Play();
+            bgmSource1.Play();
             currentSourceActive = 1;
         }
         Debug.Log("waiting for end of bgm");
@@ -87,10 +89,14 @@ public class AudioManager : MonoBehaviour
         bool isRamp = false;
         bool isIntro = false;
 
+        Debug.Log("Song: " + changeTo);
+
         if (changeTo.Contains("Ramp"))
             isRamp = true;
         else if (changeTo.Contains("Intro"))
             isIntro = true;
+
+        Debug.Log("isRamp = " + isRamp + "; isIntro = " + isIntro);
 
         AudioClip with = (AudioClip)Resources.Load(bgmDict[changeTo], typeof(AudioClip));
 
@@ -98,44 +104,69 @@ public class AudioManager : MonoBehaviour
         {
             if (currentSourceActive == 1)
             {
+                Debug.Log("Playing " + with.name);
                 bgmSource2.clip = with;
                 bgmSource2.loop = false;
-                bgmSource2.audio.Play();
+                bgmSource2.Play();
                 currentSourceActive = 2;
             }
             else
             {
+                Debug.Log("Playing " + with.name);
                 bgmSource1.clip = with;
                 bgmSource1.loop = false;
-                bgmSource1.audio.Play();
+                bgmSource1.Play();
                 currentSourceActive = 1;
             }
-            StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Ramp")));
+            StartCoroutine(StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Ramp"))));
         }
 
         else
         {
-            if (currentSourceActive == 1)
+            if (isIntro)
             {
-                bgmSource2.clip = with;
-                bgmSource2.loop = true;
-                bgmSource2.audio.Play();
-                StartCoroutine(Crossfade(bgmSource2.audio, bgmSource1.audio, 1.0f));
-                currentSourceActive = 2;
-            }
-            else
-            {
-                bgmSource1.clip = with;
-                bgmSource2.loop = true;
-                bgmSource1.audio.Play();
-                StartCoroutine(Crossfade(bgmSource1.audio, bgmSource2.audio, 1.0f));
-                currentSourceActive = 1;
+                if (currentSourceActive == 1)
+                {
+                    Debug.Log("Playing " + with.name);
+                    bgmSource2.clip = with;
+                    bgmSource2.loop = false;
+                    bgmSource2.Play();
+                    currentSourceActive = 2;
+                }
+                else
+                {
+                    Debug.Log("Playing " + with.name);
+                    bgmSource1.clip = with;
+                    bgmSource2.loop = false;
+                    bgmSource1.Play();
+                    currentSourceActive = 1;
+                }
+
+                Debug.Log("Calling StartIntro");
+                StartCoroutine(StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Intro"))));
             }
 
-            if (isIntro)
-                StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Intro")));
             else
             {
+                if (currentSourceActive == 1)
+                {
+                    Debug.Log("Playing " + with.name);
+                    bgmSource2.clip = with;
+                    bgmSource2.loop = true;
+                    bgmSource2.Play();
+                    StartCoroutine(Crossfade(bgmSource2.audio, bgmSource1.audio, 1.0f));
+                    currentSourceActive = 2;
+                }
+                else
+                {
+                    Debug.Log("Playing " + with.name);
+                    bgmSource1.clip = with;
+                    bgmSource2.loop = true;
+                    bgmSource1.Play();
+                    StartCoroutine(Crossfade(bgmSource1.audio, bgmSource2.audio, 1.0f));
+                    currentSourceActive = 1;
+                }
+
                 float waitFor = with.length - 2.0f;
                 StartCoroutine(Interrupt(waitFor)); //prevents new interrupt from happening until end of clip
             }
@@ -159,9 +190,9 @@ public class AudioManager : MonoBehaviour
         interrupted = false;
 
         if (currentSourceActive == 1)
-            bgmSource1.audio.Stop();
+            bgmSource1.Stop();
         else
-            bgmSource2.audio.Stop();
+            bgmSource2.Stop();
     }
 
     private IEnumerator Crossfade(AudioSource up, AudioSource down, float duration)
