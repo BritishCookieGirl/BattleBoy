@@ -43,10 +43,9 @@ public class CameraManager : MonoBehaviour {
 	}
 	
 	private void StartLevel() {
-<<<<<<< HEAD
 
 		ChangeCameras(mainLevelCam,levelGUI,false);
-=======
+
 		startGUI.SetActive(false);
 		levelGUI.SetActive(true);
 		storeGUI.SetActive(false);
@@ -62,8 +61,6 @@ public class CameraManager : MonoBehaviour {
 		winCam.enabled = false;
 		
 		sceneLight.enabled = false;
->>>>>>> All Animations & Sound Fix
-		
 	}
 	
 	private void EndLevel() {
