@@ -24,24 +24,25 @@ public class EnemyAttack : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		switch (currentState) {
-		case EnemyState.idle:
-			//print("Chillin");
-			Idle();
-			break;
-		case EnemyState.alert:
-			//print("Who dat is?!");
-			Alert();
-			break;
-		case EnemyState.attack:
-			//print("YAA BITCH!!");
-			Attack();
-			break;
-		default:
-			break;
-		}
-	
+	void Update ()
+    {
+        switch (currentState)
+        {
+            case EnemyState.idle:
+                //print("Chillin");
+                Idle();
+                break;
+            case EnemyState.alert:
+                //print("Who dat is?!");
+                Alert();
+                break;
+            case EnemyState.attack:
+                //print("YAA BITCH!!");
+                Attack();
+                break;
+            default:
+                break;
+        }
 	}
 	
 	private void Attack() {
