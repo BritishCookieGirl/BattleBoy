@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class Enemy : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class Enemy : MonoBehaviour
 
     private CharacterController character;
 
+    private OTAnimatingSprite deathAnimation;
+    private OTAnimatingSprite runAnimation;
+
+    private Vector3 prevLoc = Vector3.zero;
+    private Vector3 prevVel = Vector3.zero;
+
 //	public delegate void DamageEventHandler(int points);
 //	public static event DamageEventHandler TookDamage;
 	
@@ -33,7 +40,11 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-		
+        deathAnimation = this.gameObject.GetComponentsInChildren<OTAnimatingSprite>().Single(x => x.name.Contains("EnemyHitAnimSprite"));
+        deathAnimation.visible = false;
+        runAnimation = this.gameObject.GetComponentsInChildren<OTAnimatingSprite>().Single(y => y.name.Contains("EnemyRunAnimSprite"));
+        runAnimation.visible = true;
+
         character = this.GetComponent<CharacterController>();
         impact = Vector3.zero;
 	//transform.parent = GameObject.Find("Enemy Spawn").transform;
@@ -53,6 +64,47 @@ public class Enemy : MonoBehaviour
         }
 	}
 
+    //private void CreateAnimSprites()
+    //{
+    //    OTSpriteSheet sheet1 = OT.CreateObject(OTObjectType.SpriteSheet).GetComponent<OTSpriteSheet>();
+    //    sheet1.texture = (Texture2D)Resources.Load("monster run", typeof(Texture2D));
+    //    sheet1.framesXY = new Vector2(2, 2);
+    //    OTAnimation animation1 = OT.CreateObject(OTObjectType.Animation).GetComponent<OTAnimation>();
+    //    OTAnimationFrameset frameset1 = new OTAnimationFrameset();
+    //    frameset1.container = sheet1;
+    //    frameset1.startFrame = 0;
+    //    frameset1.endFrame = 3;
+    //    frameset1.name = "Run";
+    //    animation1.framesets = new OTAnimationFrameset[] { frameset1 };
+    //    animation1.duration = 0.1333f;
+    //    animation1.name = "EnemyRunAnim";
+    //    runAnimation = OT.CreateObject(OTObjectType.AnimatingSprite).GetComponent<OTAnimatingSprite>();
+    //    runAnimation.animation = animation1;
+    //    runAnimation.startAtRandomFrame = false;
+    //    runAnimation.looping = true;
+    //    runAnimation.playOnStart = true;
+    //    runAnimation.visible = true;
+
+    //    OTSpriteSheet sheet2 = OT.CreateObject(OTObjectType.SpriteSheet).GetComponent<OTSpriteSheet>();
+    //    sheet2.texture = (Texture2D)Resources.Load("monster knockback", typeof(Texture2D));
+    //    sheet2.framesXY = new Vector2(2, 3);
+    //    OTAnimation animation2 = OT.CreateObject(OTObjectType.Animation).GetComponent<OTAnimation>();
+    //    OTAnimationFrameset frameset2 = new OTAnimationFrameset();
+    //    frameset2.container = sheet2;
+    //    frameset2.startFrame = 0;
+    //    frameset2.endFrame = 5;
+    //    frameset2.name = "Hit";
+    //    animation2.framesets = new OTAnimationFrameset[] { frameset2 };
+    //    animation2.duration = 0.2f;
+    //    animation2.name = "EnemyHitAnim";
+    //    deathAnimation = OT.CreateObject(OTObjectType.AnimatingSprite).GetComponent<OTAnimatingSprite>();
+    //    deathAnimation.animation = animation2;
+    //    deathAnimation.startAtRandomFrame = false;
+    //    deathAnimation.looping = false;
+    //    deathAnimation.playOnStart = false;
+    //    deathAnimation.visible = false;
+    //}
+
     private Vector3 impact;
 
     public void AddImpact(Vector3 force, float strength)
@@ -69,6 +121,20 @@ public class Enemy : MonoBehaviour
         if (impact.magnitude > 0.2) character.Move(impact * Time.deltaTime);
         //consumes the impact energy each cycle
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+
+        Vector3 curVel = (character.transform.localPosition - prevLoc);
+        if (curVel.x > 0)
+        {
+            //character.transform.LookAt(new Vector3(100f, 0f, 0f));
+            runAnimation.flipHorizontal = true;
+        }
+        else
+        {
+            //character.transform.LookAt(new Vector3(-100f, 0f, 0f));
+            runAnimation.flipHorizontal = false;
+        }
+        prevLoc = character.transform.localPosition;
+        prevVel = curVel;
     }
 
     void FixedUpdate()
@@ -110,7 +176,14 @@ public class Enemy : MonoBehaviour
 	
 	public void Die() {
 		ScoreManager.AddToScore(pointValue);
-		
+
+        runAnimation.Stop();
+        runAnimation.visible = false;
+        deathAnimation.visible = true;
+        deathAnimation.PlayOnce();
+        
+        //DeathWait();
+
 		if (particlesUnlocked) {
 			deathRainbows.Play();
 		}
@@ -119,5 +192,9 @@ public class Enemy : MonoBehaviour
 		gameObject.collider.enabled = false;
 		gameObject.renderer.enabled = false;;
 	}
-	
+
+    private IEnumerable DeathWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+    }
 }

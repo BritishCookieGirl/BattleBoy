@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
+<<<<<<< HEAD
 	public static void TriggerCreditsClose() {
 		if (CreditsClose != null) {
 			print ("CreditsOpen Event Dispatched");
@@ -89,6 +90,10 @@ public class GameManager : MonoBehaviour
 	
 	public static void TriggerLevelStart() {
 		
+=======
+	public static void TriggerLevelStart()
+    {	
+>>>>>>> All Animations & Sound Fix
 		startTime = Time.time;
 		bonusEndTime = startTime + bonusTime;
 		levelRunning = true;
