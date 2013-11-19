@@ -41,6 +41,8 @@ public class Enemy : MonoBehaviour
 	void Start ()
     {
         deathAnimation = this.gameObject.GetComponentsInChildren<OTAnimatingSprite>().Single(x => x.name.Contains("EnemyHitAnimSprite"));
+        deathAnimation.onAnimationStart = OnAnimationStart;
+        deathAnimation.onAnimationFinish = OnAnimationFinish;
         deathAnimation.visible = false;
         runAnimation = this.gameObject.GetComponentsInChildren<OTAnimatingSprite>().Single(y => y.name.Contains("EnemyRunAnimSprite"));
         runAnimation.visible = true;
@@ -152,7 +154,7 @@ public class Enemy : MonoBehaviour
 	
 	// Called automatically anytime level finishes - set win/lose conditions here
 	private void LevelComplete() {
-		Die ();	
+		LevelCleanup();
 	}
 	
 	// Use by external objects to apply damage to enemy instance
@@ -173,9 +175,23 @@ public class Enemy : MonoBehaviour
 		GameManager.LevelStart -= LevelStart;
 		GameManager.LevelComplete -= LevelComplete;
 	}
+
+    public void LevelCleanup()
+    {
+        ScoreManager.AddToScore(pointValue);
+
+        this.gameObject.GetComponentInChildren<EnemyCombat>().isDead = true;
+
+        Destroy(gameObject, 3);
+        gameObject.collider.enabled = false;
+        gameObject.renderer.enabled = false; ;
+    }
 	
-	public void Die() {
+	public void Die()
+    {
 		ScoreManager.AddToScore(pointValue);
+
+        this.gameObject.GetComponentInChildren<EnemyCombat>().isDead = true;
 
         runAnimation.Stop();
         runAnimation.visible = false;
@@ -196,5 +212,21 @@ public class Enemy : MonoBehaviour
     private IEnumerable DeathWait()
     {
         yield return new WaitForSeconds(0.5f);
+    }
+
+    public void OnAnimationStart(OTObject owner)
+    {
+        if (owner == deathAnimation)
+        {
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Die");
+        }
+    }
+
+    public void OnAnimationFinish(OTObject owner)
+    {
+        if (owner == deathAnimation)
+        {
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Fireworks");
+        }
     }
 }

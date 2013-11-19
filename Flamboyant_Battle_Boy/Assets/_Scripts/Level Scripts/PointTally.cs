@@ -48,8 +48,23 @@ public class PointTally : MonoBehaviour {
 		}
 	
 	}
+
+    private float timeElapsed = 0f;
+    private float timeLimit = 4f;
+    private float totalTimeElapsed = 0f;
 	
-	void OnGUI () {
+	void OnGUI ()
+    {
+        float timegap = 1;
+        timeElapsed += Time.deltaTime;
+        totalTimeElapsed += Time.deltaTime;
+
+        if (timeElapsed > timegap && totalTimeElapsed <= timeLimit)
+        {
+            timeElapsed = 0f;
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Coin");
+        }
+
 		if (windowOpen) {
 			windowRect = GUI.Window(0, windowRect, TallyWindow, "", windowStyle);
 		}

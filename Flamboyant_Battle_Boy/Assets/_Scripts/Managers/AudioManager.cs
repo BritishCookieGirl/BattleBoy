@@ -26,7 +26,22 @@ public class AudioManager : MonoBehaviour
 
     private Dictionary<string, string> audioDict = new Dictionary<string, string>(){
         {"MenuButtonOver","buttonOver"},
-        {"MenuButtonSelect", "buttonSelect"}
+        {"MenuButtonSelect", "buttonSelect"},
+        {"Cheer", "Cheering"},
+        {"Coin", "Coin"},
+        {"Die", "Die"},
+        {"Firecracker", "firecracker"},
+        {"Fireworks", "Firework Explode"},
+        {"Grenade", "Grenade 1"},
+        {"Kick1", "Kick 1"},
+        {"Kick2", "Kick 2"},
+        {"Kick3", "Kick 3"},
+        {"Punch1", "Punch Hit 1"},
+        {"Punch2", "Punch Hit 2"},
+        {"Punch3", "Punch Hit 3"},
+        {"Whoosh1", "Whoosh 1"},
+        {"Whoosh2", "Whoosh 2"},
+        {"Whoosh3", "Whoosh 3"}
     };
 
 	// Use this for initialization
@@ -212,8 +227,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySoundEffect(string effectName)
     {
-        //Debug.Log("Playing Sound Effect: " + effectName);
-        //Debug.Log("Clip name: " + audioDict[effectName]);
+        if (effectName == "Kick" || effectName == "Punch" || effectName == "Whoosh")
+        {
+            System.Random r = new System.Random();
+            effectName += r.Next(1, 3);
+        }
+
         AudioClip clip = (AudioClip)Resources.Load(audioDict[effectName], typeof(AudioClip));
         //Debug.Log("Clip name: " + clip.name);
         source.PlayOneShot(clip);

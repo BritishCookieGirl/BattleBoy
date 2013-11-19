@@ -74,6 +74,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (collide.gameObject.tag == "Enemy")
         {
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Punch");
+
             Vector3 force;
             int attackStrength;
 

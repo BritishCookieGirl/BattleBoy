@@ -294,6 +294,7 @@ public class CharacterController2D : MonoBehaviour
         if (Input.GetButtonDown("Jump") && canControl && gameObject.tag == "Player")
         {
             jump.lastButtonTime = Time.time;
+            HandleJumpingAnimation();
         }
 
         UpdateSmoothedMovementDirection();
@@ -381,6 +382,20 @@ public class CharacterController2D : MonoBehaviour
         {
             activePlatform = hit.collider.transform;
         }
+    }
+
+    void HandleJumpingAnimation()
+    {
+        this.gameObject.GetComponent<PlayerCombat>().HandleJump();
+
+        //if (jump.jumping || jump.doubleJumping || jump.tripleJumping)
+        //{
+        //    //this.gameObject.GetComponent<PlayerCombat>().IsJumping = true;
+        //}
+        //else if (!jump.jumping && !jump.doubleJumping && !jump.tripleJumping)
+        //{
+        //    this.gameObject.GetComponent<PlayerCombat>().IsJumping = false;
+        //}
     }
 
     void HandleAnimations()

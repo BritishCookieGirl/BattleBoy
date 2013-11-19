@@ -81,10 +81,11 @@ public class CameraManager : MonoBehaviour {
 		
 	}
 	
-	private void WinGame() {
+	private void WinGame()
+    {
+        GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Cheer");
 
-		ChangeCameras(winCam,null,false);
-		
+		ChangeCameras(winCam,null,false);		
 	}
 	
 	

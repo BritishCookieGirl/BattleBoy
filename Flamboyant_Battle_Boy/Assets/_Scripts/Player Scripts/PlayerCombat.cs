@@ -18,22 +18,29 @@ public class PlayerCombat : MonoBehaviour
     private OTAnimatingSprite runAnimation;
     private OTAnimatingSprite attackAnimation;
     private OTAnimatingSprite idleAnimation;
+    private OTAnimatingSprite jumpAnimation;
     private bool isRunPlaying = false;
     private bool isAttackPlaying = false;
 
     private bool isMoving = false;
     public bool IsMoving { get { return isMoving; } set { isMoving = value; } }
+
+    private bool isJumping = false;
+    public bool IsJumping { get { return isJumping; } set { isJumping = value; } }
 	
     // Use this for initialization
     void Start()
     {
         attackAnimation = OT.ObjectByName("PlayerAttackAnimSprite") as OTAnimatingSprite;
         attackAnimation.onAnimationFinish = OnAnimationFinish;
+        attackAnimation.onAnimationStart = OnAnimationStart;
         attackAnimation.visible = false;
         runAnimation = OT.ObjectByName("PlayerRunAnimSprite") as OTAnimatingSprite;
         runAnimation.visible = false;
         idleAnimation = OT.ObjectByName("PlayerIdleAnimSprite") as OTAnimatingSprite;
         idleAnimation.visible = true;
+        jumpAnimation = OT.ObjectByName("PlayerJumpAnimSprite") as OTAnimatingSprite;
+        jumpAnimation.visible = false;
 
         AttackBox.SetActive(false);
         attackStartTime = 0f;
@@ -41,11 +48,18 @@ public class PlayerCombat : MonoBehaviour
         comboEndTime = Time.time;
         comboEndLength = 2f;
         currentCombo = 0;
+
+        controller = this.gameObject.GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //if (Input.GetButtonDown("Jump"))
+        //{
+        //    HandleJump();
+        //}
+
         HandleAnimations();
 
         float elapsedAttackTime = Time.time - attackStartTime;
@@ -121,23 +135,77 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    public void HandleJump()
+    {
+        Debug.Log("handlejump");
+        //make it jump
+        if (!IsJumping)
+        {
+            Debug.Log("not jumping");
+            IsJumping = true;
+            jumpAnimation.visible = true;
+            jumpAnimation.Play();
+
+            IsMoving = false;
+            isAttackPlaying = false;
+            isRunPlaying = false;
+            attackAnimation.Stop();
+            attackAnimation.visible = false;
+            runAnimation.Stop();
+            runAnimation.visible = false;
+            idleAnimation.Stop();
+            idleAnimation.visible = false;
+        }
+        else
+        {
+            Debug.Log("jumping");
+            isJumping = true;
+            jumpAnimation.visible = true;
+
+            IsMoving = false;
+            isAttackPlaying = false;
+            isRunPlaying = false;
+            attackAnimation.Stop();
+            attackAnimation.visible = false;
+            runAnimation.Stop();
+            runAnimation.visible = false;
+            idleAnimation.Stop();
+            idleAnimation.visible = false;
+        }
+    }
+
+    private CharacterController controller;
+
     private void HandleAnimations()
     {
-        if (IsMoving && !isAttackPlaying && !isRunPlaying) //is moving and not attacking but run animation is not playing
+        if (controller.isGrounded)
+        {
+            jumpAnimation.Stop();
+            jumpAnimation.visible = false;
+            isJumping = false;
+        }
+
+        //make it run
+        if (IsMoving && !IsJumping && !isAttackPlaying && !isRunPlaying) //is moving and not attacking but run animation is not playing
         {
             isRunPlaying = true;
             runAnimation.visible = true;
             runAnimation.Play();
             idleAnimation.Stop();
             idleAnimation.visible = false;
+            jumpAnimation.Stop();
+            jumpAnimation.visible = false;
         }
-        if (!IsMoving && !isAttackPlaying) //is not moving and not attacking
+        //make it idle
+        if (!IsMoving && !isAttackPlaying && !IsJumping) //is not moving and not attacking
         {
             isRunPlaying = false;
             runAnimation.Stop();
             runAnimation.visible = false;
             idleAnimation.visible = true;
             idleAnimation.Play();
+            jumpAnimation.Stop();
+            jumpAnimation.visible = false;
         }
     }
 
@@ -153,7 +221,17 @@ public class PlayerCombat : MonoBehaviour
             runAnimation.visible = false;
             idleAnimation.Stop();
             idleAnimation.visible = false;
+            jumpAnimation.Stop(); //should be pause
+            jumpAnimation.visible = false;
         //}
+    }
+
+    public void OnAnimationStart(OTObject owner)
+    {
+        if (owner == attackAnimation)
+        {
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Whoosh");
+        }
     }
 
     public void OnAnimationFinish(OTObject owner)

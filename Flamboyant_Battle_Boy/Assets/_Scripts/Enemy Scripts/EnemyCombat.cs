@@ -16,6 +16,8 @@ public class EnemyCombat : MonoBehaviour
 
     private bool lerpStarted;
 
+    public bool isDead = false;
+
     public void SetLerpStartedFalse()
     {
         lerpStarted = false;
@@ -53,8 +55,10 @@ public class EnemyCombat : MonoBehaviour
 
     void OnTriggerEnter(Collider collide)
     {
-        if (collide.gameObject.tag == "Player")
+        if (collide.gameObject.tag == "Player" && !isDead)
         {
+            GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Kick");
+
             Vector3 force;
             int attackStrength;
 
