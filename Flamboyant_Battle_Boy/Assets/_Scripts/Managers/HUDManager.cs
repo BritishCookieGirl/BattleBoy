@@ -11,7 +11,7 @@ public class HUDManager : MonoBehaviour
 		GameManager.LevelComplete += LevelComplete;
 		ComboManager.ComboChanged += DisplayCombo;
 		ScoreManager.ScoreChanged += DisplayScore;	
-		GameManager.TimeChanged +=  DisplayTime;
+		//GameManager.TimeChanged +=  DisplayTime;
 	}
 
 	// Use this for initialization

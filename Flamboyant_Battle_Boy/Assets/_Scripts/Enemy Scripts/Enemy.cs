@@ -7,9 +7,9 @@ public class Enemy : MonoBehaviour
     private float lockZDepth = 7f; //= GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().lockZDepth;
 	public float speed = 5f;
 	public bool canMove = true;
-	public int health = 100;
+	public int health = 200;
 	public int defense = 0;
-	public int pointValue = 100;
+	public int pointValue = 200;
 	public ParticleSystem deathRainbows;
 	public TextMesh healthCounter;
 	public Transform spawnPoint;
