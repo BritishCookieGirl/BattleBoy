@@ -32,6 +32,7 @@ public class AudioManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        AudioListener.volume = 0.1f;
         source = this.gameObject.AddComponent<AudioSource>();
         bgmSource1 = this.gameObject.AddComponent<AudioSource>();
         bgmSource2 = this.gameObject.AddComponent<AudioSource>();

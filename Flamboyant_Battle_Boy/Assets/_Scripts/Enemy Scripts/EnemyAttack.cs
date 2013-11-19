@@ -49,11 +49,9 @@ public class EnemyAttack : MonoBehaviour {
 		//attack player
 		mood.renderer.material.color = Color.red;
 		
-		if (GameManager.currentTime > nextAttack) {
-			
-			//
-			//attack code here
-			//
+		if (GameManager.currentTime > nextAttack)
+        {
+            this.gameObject.GetComponentInChildren<EnemyCombat>().PerformAttack();
 			
 			nextAttack = GameManager.currentTime + attackTime + Random.Range(0,3);
 		}

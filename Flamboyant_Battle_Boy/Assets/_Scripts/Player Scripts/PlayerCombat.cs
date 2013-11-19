@@ -168,4 +168,26 @@ public class PlayerCombat : MonoBehaviour
             idleAnimation.Play();
         }
     }
+
+    public void InterruptCombo()
+    {
+        currentCombo = ComboLength;
+        comboEndTime = Time.time - (Time.deltaTime * 70);
+    }
+
+    private Vector3 impact;
+
+    public void AddImpact(Vector3 force, float strength)
+    {
+        impact += force * strength;
+    }
+	
+	// Update is called once per frame
+    void Update()
+    {
+        //apply impact force
+        if (impact.magnitude > 0.2) this.gameObject.GetComponent<CharacterController>().Move(impact * Time.deltaTime);
+        //consumes the impact energy each cycle
+        impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+    }
 }
