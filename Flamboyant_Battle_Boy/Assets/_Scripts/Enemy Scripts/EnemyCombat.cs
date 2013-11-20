@@ -27,9 +27,10 @@ public class EnemyCombat : MonoBehaviour
     {
         this.transform.localPosition = Vector3.zero;
 
-        journeyLength = Vector3.Distance(this.transform.localPosition, dest);
+
+        //journeyLength = Vector3.Distance(this.transform.localPosition, dest);
         startTime = Time.time;
-        lerpStarted = true;
+        //lerpStarted = true;
     }
 
     // Use this for initialization
@@ -44,13 +45,13 @@ public class EnemyCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distCovered = (Time.time - startTime) * moveSpeed;
-        fracJourney = distCovered / journeyLength;
+        //distCovered = (Time.time - startTime) * moveSpeed;
+        //fracJourney = distCovered / journeyLength;
 
-        if (lerpStarted)
-        {
-            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, dest, fracJourney);
-        }
+        //if (lerpStarted)
+        //{
+            //this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, dest, fracJourney);
+        //}
     }
 
     void OnTriggerEnter(Collider collide)

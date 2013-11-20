@@ -17,6 +17,7 @@ public class PlayerCombat : MonoBehaviour
 
     private OTAnimatingSprite runAnimation;
     private OTAnimatingSprite attackAnimation;
+    private OTAnimatingSprite liftAnimation;
     private OTAnimatingSprite idleAnimation;
     private OTAnimatingSprite jumpAnimation;
     private bool isRunPlaying = false;
@@ -35,6 +36,10 @@ public class PlayerCombat : MonoBehaviour
         attackAnimation.onAnimationFinish = OnAnimationFinish;
         attackAnimation.onAnimationStart = OnAnimationStart;
         attackAnimation.visible = false;
+        liftAnimation = OT.ObjectByName("PlayerAttackLiftAnimSprite") as OTAnimatingSprite;
+        liftAnimation.onAnimationFinish = OnAnimationFinish;
+        liftAnimation.onAnimationStart = OnAnimationStart;
+        liftAnimation.visible = false;
         runAnimation = OT.ObjectByName("PlayerRunAnimSprite") as OTAnimatingSprite;
         runAnimation.visible = false;
         idleAnimation = OT.ObjectByName("PlayerIdleAnimSprite") as OTAnimatingSprite;
@@ -94,7 +99,7 @@ public class PlayerCombat : MonoBehaviour
                 attackStartTime = Time.time;
                 AttackBox.GetComponent<PlayerAttack>().SetAttackType("Lift");
                 currentCombo++;
-                PlayAnimation();
+                PlayAttackAnimation("Lift");
             }
             if (Input.GetButton("SmashAttack"))
             {
@@ -103,7 +108,7 @@ public class PlayerCombat : MonoBehaviour
                 attackStartTime = Time.time;
                 AttackBox.GetComponent<PlayerAttack>().SetAttackType("Smash");
                 currentCombo++;
-                PlayAnimation();
+                PlayAttackAnimation("Smash");
             }
             if (Input.GetButton("NeutralAttack"))
             {
@@ -112,7 +117,7 @@ public class PlayerCombat : MonoBehaviour
                 attackStartTime = Time.time;
                 AttackBox.GetComponent<PlayerAttack>().SetAttackType("Neutral");
                 currentCombo++;
-                PlayAnimation();
+                PlayAttackAnimation("Neutral");
             }
             if (Input.GetButton("SpecialAttack1"))
             {
@@ -121,7 +126,7 @@ public class PlayerCombat : MonoBehaviour
                 attackStartTime = Time.time;
                 AttackBox.GetComponent<PlayerAttack>().SetAttackType("Special1");
                 currentCombo++;
-                PlayAnimation();
+                PlayAttackAnimation("Special");
             }
             //Debug.Log("Current Combo: " + currentCombo);
         }
@@ -151,6 +156,8 @@ public class PlayerCombat : MonoBehaviour
             isRunPlaying = false;
             attackAnimation.Stop();
             attackAnimation.visible = false;
+            liftAnimation.Stop();
+            liftAnimation.visible = false;
             runAnimation.Stop();
             runAnimation.visible = false;
             idleAnimation.Stop();
@@ -167,6 +174,8 @@ public class PlayerCombat : MonoBehaviour
             isRunPlaying = false;
             attackAnimation.Stop();
             attackAnimation.visible = false;
+            liftAnimation.Stop();
+            liftAnimation.visible = false;
             runAnimation.Stop();
             runAnimation.visible = false;
             idleAnimation.Stop();
@@ -209,26 +218,36 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void PlayAnimation()
+    private void PlayAttackAnimation(string attackType)
     {
-        //if (!isAnimPlaying)
-        //{
-            isAttackPlaying = true;
+        isAttackPlaying = true;
+
+        if (attackType == "Neutral" || attackType == "Smash")
+        {
             attackAnimation.visible = true;
             attackAnimation.PlayOnce("Attack");
-            isRunPlaying = false;
-            runAnimation.Stop();
-            runAnimation.visible = false;
-            idleAnimation.Stop();
-            idleAnimation.visible = false;
-            jumpAnimation.Stop(); //should be pause
-            jumpAnimation.visible = false;
-        //}
+        }
+        else if (attackType == "Lift" || attackType == "Special")
+        {
+            liftAnimation.visible = true;
+            liftAnimation.PlayOnce("Lift");
+        }
+        isRunPlaying = false;
+        runAnimation.Stop();
+        runAnimation.visible = false;
+        idleAnimation.Stop();
+        idleAnimation.visible = false;
+        //jumpAnimation.Stop(); //should be pause
+        if (!controller.isGrounded)
+            jumpAnimation.Pauze();
+        else
+            jumpAnimation.Stop();
+        jumpAnimation.visible = false;
     }
 
     public void OnAnimationStart(OTObject owner)
     {
-        if (owner == attackAnimation)
+        if (owner == attackAnimation || owner == liftAnimation)
         {
             GameObject.FindGameObjectWithTag("Audio").SendMessage("PlaySoundEffect", "Whoosh");
         }
@@ -236,14 +255,26 @@ public class PlayerCombat : MonoBehaviour
 
     public void OnAnimationFinish(OTObject owner)
     {
-        if (owner == attackAnimation && isAttackPlaying)
+        if ((owner == attackAnimation || owner == liftAnimation) && isAttackPlaying)
         {
             isAttackPlaying = false;
             isRunPlaying = false;
             attackAnimation.visible = false;
+            liftAnimation.visible = false;
             runAnimation.visible = false;
-            idleAnimation.visible = true;
-            idleAnimation.Play();
+
+            if (!controller.isGrounded)
+            {
+                jumpAnimation.Resume();
+                jumpAnimation.visible = true;
+
+                idleAnimation.visible = false;
+            }
+            else
+            {
+                idleAnimation.visible = true;
+                idleAnimation.Play();
+            }
         }
     }
 
