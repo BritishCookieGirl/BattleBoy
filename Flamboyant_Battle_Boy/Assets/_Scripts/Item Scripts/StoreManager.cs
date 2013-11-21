@@ -157,6 +157,7 @@ public class StoreManager : MonoBehaviour
 			switch (displayItem.UnlockFeature()) {
 			case UnlockableItem.Feature.Combo:
 				player.GetComponent<PlayerCombat> ().IncreaseComboLength ();
+				ComboManager.IncrementMaxCombo();
 				comboIndex++;
 				UnlockNextItem(comboIndex,weapons);
 				break;

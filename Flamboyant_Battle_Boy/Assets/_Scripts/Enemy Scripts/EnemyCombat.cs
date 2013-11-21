@@ -71,7 +71,7 @@ public class EnemyCombat : MonoBehaviour
 
             force.x *= direction.x;
             collide.gameObject.GetComponent<PlayerCombat>().AddImpact(force, attackStrength);
-            collide.gameObject.GetComponent<PlayerCombat>().InterruptCombo();
+            //collide.gameObject.GetComponent<PlayerCombat>().InterruptCombo();
         }
     }
 }

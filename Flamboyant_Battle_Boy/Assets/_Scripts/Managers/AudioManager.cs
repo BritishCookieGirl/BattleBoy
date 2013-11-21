@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
+	
+	public float volume;
+	
     private AudioSource source;
     private AudioSource bgmSource1;
     private AudioSource bgmSource2;
@@ -47,7 +50,7 @@ public class AudioManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        AudioListener.volume = 0.1f;
+        AudioListener.volume = volume;
         source = this.gameObject.AddComponent<AudioSource>();
         bgmSource1 = this.gameObject.AddComponent<AudioSource>();
         bgmSource2 = this.gameObject.AddComponent<AudioSource>();
@@ -65,15 +68,15 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator StartIntro(AudioClip intro, string mainPart)
     {
-        Debug.Log("Waiting for song to finish in: " + (intro.length - fadeLength));
+        //Debug.Log("Waiting for song to finish in: " + (intro.length - fadeLength));
         yield return new WaitForSeconds(intro.length - fadeLength);
-        Debug.Log("Starting Post-Intro Part");
+	        //Debug.Log("Starting Post-Intro Part");
 
         AudioClip mainLoop = (AudioClip)Resources.Load(bgmDict[mainPart], typeof(AudioClip));
 
         if (currentSourceActive == 1)
         {
-            Debug.Log("switching to source 2");
+            //Debug.Log("switching to source 2");
             bgmSource1.audio.Stop();
             bgmSource2.loop = true;
             bgmSource2.clip = mainLoop;
@@ -82,21 +85,21 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("switching to source 1");
+            //Debug.Log("switching to source 1");
             bgmSource2.audio.Stop();
             bgmSource1.loop = true;
             bgmSource1.clip = mainLoop;
             bgmSource1.Play();
             currentSourceActive = 1;
         }
-        Debug.Log("waiting for end of bgm");
+        //Debug.Log("waiting for end of bgm");
         yield return new WaitForSeconds(mainLoop.length - fadeLength);
         interrupted = false;
     }
 
     private void StartInterrupt(string changeTo)
     {
-        Debug.Log("interrupting");
+        //Debug.Log("interrupting");
         if (interrupted)
             return;
 
@@ -105,14 +108,14 @@ public class AudioManager : MonoBehaviour
         bool isRamp = false;
         bool isIntro = false;
 
-        Debug.Log("Song: " + changeTo);
+        //Debug.Log("Song: " + changeTo);
 
         if (changeTo.Contains("Ramp"))
             isRamp = true;
         else if (changeTo.Contains("Intro"))
             isIntro = true;
 
-        Debug.Log("isRamp = " + isRamp + "; isIntro = " + isIntro);
+        //Debug.Log("isRamp = " + isRamp + "; isIntro = " + isIntro);
 
         AudioClip with = (AudioClip)Resources.Load(bgmDict[changeTo], typeof(AudioClip));
 
@@ -120,7 +123,7 @@ public class AudioManager : MonoBehaviour
         {
             if (currentSourceActive == 1)
             {
-                Debug.Log("Playing " + with.name);
+                //Debug.Log("Playing " + with.name);
                 bgmSource2.clip = with;
                 bgmSource2.loop = false;
                 bgmSource2.Play();
@@ -128,7 +131,7 @@ public class AudioManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Playing " + with.name);
+                //Debug.Log("Playing " + with.name);
                 bgmSource1.clip = with;
                 bgmSource1.loop = false;
                 bgmSource1.Play();
@@ -143,7 +146,7 @@ public class AudioManager : MonoBehaviour
             {
                 if (currentSourceActive == 1)
                 {
-                    Debug.Log("Playing " + with.name);
+                    //Debug.Log("Playing " + with.name);
                     bgmSource2.clip = with;
                     bgmSource2.loop = false;
                     bgmSource2.Play();
@@ -151,14 +154,14 @@ public class AudioManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Playing " + with.name);
+                    //Debug.Log("Playing " + with.name);
                     bgmSource1.clip = with;
                     bgmSource2.loop = false;
                     bgmSource1.Play();
                     currentSourceActive = 1;
                 }
 
-                Debug.Log("Calling StartIntro");
+                //Debug.Log("Calling StartIntro");
                 StartCoroutine(StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Intro"))));
             }
 
@@ -166,7 +169,7 @@ public class AudioManager : MonoBehaviour
             {
                 if (currentSourceActive == 1)
                 {
-                    Debug.Log("Playing " + with.name);
+                    //Debug.Log("Playing " + with.name);
                     bgmSource2.clip = with;
                     bgmSource2.loop = true;
                     bgmSource2.Play();
@@ -175,7 +178,7 @@ public class AudioManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Playing " + with.name);
+                    //Debug.Log("Playing " + with.name);
                     bgmSource1.clip = with;
                     bgmSource2.loop = true;
                     bgmSource1.Play();

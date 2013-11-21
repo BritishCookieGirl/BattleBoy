@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
 	
 	public void Attack(Enemy enemy) {
 		enemy.ReceiveDamage("test", attackStrength);
-		ComboManager.UpdateCombo(1);
+//		ComboManager.UpdateCombo(1);
 	}
 	
 	private void OnTriggerStay(Collider other) {

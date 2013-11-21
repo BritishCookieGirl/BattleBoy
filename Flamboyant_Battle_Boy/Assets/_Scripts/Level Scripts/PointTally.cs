@@ -124,7 +124,7 @@ public class PointTally : MonoBehaviour {
 	void TallyPoints ()
 	{
 		enemies = ScoreManager.score;
-		time = (int)GameManager.remainingTime;
+		time = (int)GameManager.remainingTime * 10;
 		level = enemies + time;
 		previous = ScoreManager.totalScore;
 		total = ScoreManager.CalculateFinalScore();

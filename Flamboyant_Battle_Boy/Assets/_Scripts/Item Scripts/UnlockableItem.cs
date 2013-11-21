@@ -24,9 +24,9 @@ public class UnlockableItem : MonoBehaviour {
 	
 	private StoreManager store;
 	
-	private Color fadedColor = new Color(0.4f,0.4f,0.4f);
-	private Color normalColor = new Color(0.6f,0.6f,0.6f);
-	private Color hoverColor = new Color(0.75f,0.75f,0.75f);
+	private Color fadedColor = new Color(0.5f,0.5f,0.5f);
+	private Color normalColor = new Color(0.75f,0.75f,0.75f);
+	private Color hoverColor = new Color(0.95f,0.95f,0.95f);
 	private Color activeColor = new Color(1.0f,1.0f,1.0f);
 	
 

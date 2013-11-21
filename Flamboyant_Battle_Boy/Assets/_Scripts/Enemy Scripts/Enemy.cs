@@ -24,6 +24,8 @@ public class Enemy : MonoBehaviour
 
     private Vector3 prevLoc = Vector3.zero;
     private Vector3 prevVel = Vector3.zero;
+	
+	private bool alive;
 
 //	public delegate void DamageEventHandler(int points);
 //	public static event DamageEventHandler TookDamage;
@@ -119,24 +121,26 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-        //apply impact force
-        if (impact.magnitude > 0.2) character.Move(impact * Time.deltaTime);
-        //consumes the impact energy each cycle
-        impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-
-        Vector3 curVel = (character.transform.localPosition - prevLoc);
-        if (curVel.x > 0)
-        {
-            //character.transform.LookAt(new Vector3(100f, 0f, 0f));
-            runAnimation.flipHorizontal = true;
-        }
-        else
-        {
-            //character.transform.LookAt(new Vector3(-100f, 0f, 0f));
-            runAnimation.flipHorizontal = false;
-        }
-        prevLoc = character.transform.localPosition;
-        prevVel = curVel;
+		if (alive) {
+			//apply impact force
+			if (impact.magnitude > 0.2) character.Move(impact * Time.deltaTime);
+			//consumes the impact energy each cycle
+			impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+			
+			Vector3 curVel = (character.transform.localPosition - prevLoc);
+			if (curVel.x > 0)
+			{
+				//character.transform.LookAt(new Vector3(100f, 0f, 0f));
+				runAnimation.flipHorizontal = true;
+			}
+			else
+			{
+				//character.transform.LookAt(new Vector3(-100f, 0f, 0f));
+				runAnimation.flipHorizontal = false;
+			}
+			prevLoc = character.transform.localPosition;
+			prevVel = curVel;
+		}
     }
 
     void FixedUpdate()
@@ -167,7 +171,7 @@ public class Enemy : MonoBehaviour
 			spawnPoint.GetComponent<EnemySpawner> ().RequestRespawn();
 		}
 		ScoreManager.AddToScore(10);
-
+		ComboManager.IncrementCombo();
 	}
 	
 	// Called before object death - use to tidy lose ends
@@ -195,6 +199,7 @@ public class Enemy : MonoBehaviour
 
         runAnimation.Stop();
         runAnimation.visible = false;
+		
         deathAnimation.visible = true;
         deathAnimation.PlayOnce();
         
@@ -204,9 +209,15 @@ public class Enemy : MonoBehaviour
 			deathRainbows.Play();
 		}
 		
+		alive = false;
+		
 		Destroy(gameObject,3);
 		gameObject.collider.enabled = false;
 		gameObject.renderer.enabled = false;;
+		
+		gameObject.GetComponent<EnemyAttack>().enabled = false;
+		gameObject.GetComponent<CharacterController2D>().enabled = false;
+		
 	}
 
     private IEnumerable DeathWait()

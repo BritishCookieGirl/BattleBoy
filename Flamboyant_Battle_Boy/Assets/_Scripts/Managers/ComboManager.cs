@@ -20,19 +20,18 @@ public static class ComboManager {
 	}
 	
 	// Calculates combo and raises event after combo changes
-	public static void UpdateCombo (int points) {
-		int tempCombo = currentCombo + points;
-		
-		if (ComboExpired() || tempCombo > 5) {
-			ResetCombo();
-		} else {			
-			currentCombo = Mathf.Clamp(tempCombo,0,maxCombo);
-		}
+	public static void UpdateCombo () {
 		
 		if (firstAttack) {
 			comboStart = GameManager.currentTime;	
 			firstAttack = false;
 		} 
+		
+		if (ComboExpired() || currentCombo > maxCombo) {
+			ResetCombo();
+		} else {			
+			currentCombo = Mathf.Clamp(currentCombo,0,maxCombo);
+		}
 		
 		CalculateMultiplier();
 		
@@ -41,8 +40,25 @@ public static class ComboManager {
 		}
 	}
 	
+	public static void IncrementCombo() {
+		
+		if (currentCombo < maxCombo) {
+			currentCombo += 1;
+		}
+		
+		MonoBehaviour.print("Current Combo is " + currentCombo);
+		MonoBehaviour.print("Max Combo is " + maxCombo);
+		
+		UpdateCombo();
+	}
+	
+	public static void IncrementMaxCombo() {
+		if (maxCombo < 10) {
+			maxCombo += 1;
+		}
+	}
 	// Check if combo entry time has expired
-	private static bool ComboExpired() {
+	public static bool ComboExpired() {
 	if (GameManager.currentTime > (comboStart + comboTime)) {
 		return true;
 		}
@@ -51,6 +67,7 @@ public static class ComboManager {
 	
 	// Manually reset combo
 	public static void ResetCombo() {
+		MonoBehaviour.print("resetting combo");
 		currentCombo = 0;
 		firstAttack = true;
 		
@@ -64,6 +81,7 @@ public static class ComboManager {
 	}
 	
 	private static void LevelStart() {
+		MonoBehaviour.print("Level start reseting combo");
 		ResetCombo();
 	}
 	
