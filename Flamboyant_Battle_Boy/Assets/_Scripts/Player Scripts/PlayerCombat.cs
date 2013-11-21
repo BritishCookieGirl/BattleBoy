@@ -5,7 +5,7 @@ public class PlayerCombat : MonoBehaviour
 {
     public GameObject AttackBox;
 
-    private int comboLength = 5; //Max 10
+    private int comboLength = 4; //Max 10
     public int ComboLength { get { return comboLength; } set { comboLength = value; } }
 
     private float attackStartTime;
@@ -51,8 +51,9 @@ public class PlayerCombat : MonoBehaviour
         attackStartTime = 0f;
         attackLength = 1f;
         comboEndTime = Time.time;
-        comboEndLength = 2f;
-        currentCombo = 0;
+        comboEndLength = 1f;
+        //currentCombo = 0;
+        currentCombo = ComboManager.CurrentCombo;
 
         controller = this.gameObject.GetComponent<CharacterController>();
     }
@@ -73,6 +74,9 @@ public class PlayerCombat : MonoBehaviour
         if (elapsedComboEndTime > comboEndLength)
         {
             currentCombo = 0;
+            ComboManager.CurrentComboString = currentCombo;
+            ComboManager.CurrentCombo = currentCombo;
+            //currentCombo = ComboManager.CurrentCombo;
             comboEndTime = Time.time;
         }
 
@@ -128,8 +132,16 @@ public class PlayerCombat : MonoBehaviour
                 currentCombo++;
                 PlayAttackAnimation("Special");
             }
+
+            CheckCombo();
             //Debug.Log("Current Combo: " + currentCombo);
         }
+    }
+
+    private void CheckCombo()
+    {
+        //currentCombo = ComboManager.CurrentCombo;
+        ComboManager.CurrentComboString = currentCombo;
     }
 
     public void IncreaseComboLength()
@@ -142,11 +154,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void HandleJump()
     {
-        Debug.Log("handlejump");
+        //Debug.Log("handlejump");
         //make it jump
         if (!IsJumping)
         {
-            Debug.Log("not jumping");
+            //Debug.Log("not jumping");
             IsJumping = true;
             jumpAnimation.visible = true;
             jumpAnimation.Play();
@@ -165,7 +177,7 @@ public class PlayerCombat : MonoBehaviour
         }
         else
         {
-            Debug.Log("jumping");
+            //Debug.Log("jumping");
             isJumping = true;
             jumpAnimation.visible = true;
 

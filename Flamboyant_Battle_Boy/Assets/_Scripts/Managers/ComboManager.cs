@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class ComboManager {
-	
-	public static int currentCombo, maxCombo;
+public static class ComboManager
+{
+    private static int currentComboString;
+    public static int CurrentComboString { get { return currentComboString; } set { currentComboString = value; } }
+
+    private static int currentCombo;
+    public static int CurrentCombo { get { return currentCombo; } set { currentCombo = value; } }
+
+    public static int maxCombo;
 	public static float multiplier;
 	private static bool firstAttack;
 	private static float comboStart, comboTime;

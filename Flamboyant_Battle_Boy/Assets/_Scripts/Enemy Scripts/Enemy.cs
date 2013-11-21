@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour
 		
 		cosmeticManager = GameObject.Find("Cosmetics").GetComponent<CosmeticManager> ();
 		particlesUnlocked = cosmeticManager.enemyDeathUnlocked;
+
+        alive = true;
 	}
 	
 	// Use this for initialization
