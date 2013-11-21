@@ -3,21 +3,22 @@ using System.Collections;
 
 public class CameraManager : MonoBehaviour {
 	
-	public Camera startMenuCam, mainLevelCam, unlockStoreCam, creditsCam, winCam;
+	public Camera startMenuCam, mainLevelCam, unlockStoreCam, creditsCam, winCam, tutorialCam;
 	public Light sceneLight;
 	public Transform audioListener;
-	public GameObject startGUI, levelGUI, storeGUI, pointTally, creditsGUI;
+	public GameObject startGUI, levelGUI, storeGUI, pointTally, creditsGUI, tutorialGUI;
 	
 	void Awake() {
-		GameManager.GameStart += StartGame;
+		GameManager.GameStart += StartMenu;
 		GameManager.GameOver += EndGame;
 		GameManager.LevelStart += StartLevel;
 		GameManager.LevelComplete += EndLevel;
 		GameManager.StoreOpen += OpenStore;
-		GameManager.StoreClosed += CloseStore;
 		GameManager.CreditsOpen += OpenCredits;
-		GameManager.CreditsClose += CloseCredits;
 		GameManager.GameWon += WinGame;
+		GameManager.MainOpen += StartMenu;
+		GameManager.TutorialOpen += OpenTutorial;
+		
 	}
 	
 	// Use this for initialization
@@ -30,16 +31,15 @@ public class CameraManager : MonoBehaviour {
 	
 	}
 	
-	private void StartGame() {
-		
-		ChangeCameras(startMenuCam,startGUI,false);
-		
-	}
 	
 	private void EndGame() {
 		
 		ChangeCameras(startMenuCam,startGUI,false);
 		
+	}
+	
+	private void StartMenu() {
+		ChangeCameras(startMenuCam,startGUI,false);
 	}
 	
 	private void StartLevel() {
@@ -63,23 +63,17 @@ public class CameraManager : MonoBehaviour {
 		
 	}
 	
-	private void CloseStore() {
-
-		ChangeCameras(mainLevelCam,levelGUI,false);
-		
-	}
 	
 	private void OpenCredits() {
 
-		ChangeCameras(creditsCam,creditsGUI,true);
+		ChangeCameras(creditsCam,creditsGUI,false);
 		
 	}
 	
-	private void CloseCredits() {
-		
-		ChangeCameras(startMenuCam,startGUI,false);
-		
+	private void OpenTutorial() {
+		ChangeCameras(tutorialCam,tutorialGUI,false);
 	}
+	
 	
 	private void WinGame()
     {
@@ -105,18 +99,21 @@ public class CameraManager : MonoBehaviour {
 		storeGUI.SetActive(false);
 		pointTally.SetActive(false);
 		creditsGUI.SetActive(false);
+		tutorialGUI.SetActive(false);
 		
 		startMenuCam.enabled = false;
 		mainLevelCam.enabled = false;
 		unlockStoreCam.enabled = false;
 		creditsCam.enabled = false;
 		winCam.enabled = false;
+		tutorialCam.enabled = false;
 		
 		sceneLight.enabled = false;
 		
 		onCamera.enabled = true;
-		AlignAudio(onCamera);
 		onGUI.SetActive(true);
+		
+		AlignAudio(onCamera);
 		
 		if (lightsNeeded) {
 			sceneLight.enabled = true;

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 	public delegate void GameEvent();
 	public static event GameEvent GameStart, GameOver, GameWon; 
 	public static event GameEvent LevelStart, LevelComplete;
-	public static event GameEvent StoreOpen, StoreClosed, CreditsOpen, CreditsClose;
+	public static event GameEvent StoreOpen, CreditsOpen, TutorialOpen, MainOpen;
 	
 	private static bool victory;
 	//End Events Declarations
@@ -80,13 +80,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
-	public static void TriggerCreditsClose() {
-		if (CreditsClose != null) {
-			//print ("CreditsOpen Event Dispatched");
-			CreditsClose();
-		}
-	}
-	
 	public static void TriggerLevelStart()
     {	
 		startTime = Time.time;
@@ -120,17 +113,21 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
-	public static void TriggerStoreClosed() {
-		
-		if (StoreClosed != null) {
-			//print ("StoreClosed Event Dispatched");
-			StoreClosed();	
-		}
-	}
-	
 	public static void TriggerWinGame() {
 		if (GameWon != null) {
 			GameWon();
+		}
+	}
+	
+	public static void TriggerMainOpen() {
+		if (MainOpen != null) {
+			MainOpen();
+		}
+	}
+	
+	public static void TriggerTutorialStart() {
+		if (TutorialOpen != null) {
+			TutorialOpen();
 		}
 	}
 

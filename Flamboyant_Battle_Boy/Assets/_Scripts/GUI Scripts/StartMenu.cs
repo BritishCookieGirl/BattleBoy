@@ -7,7 +7,7 @@ public class StartMenu : MonoBehaviour {
 	public Texture2D startImg, tutorialImg, optionsImg, creditsImg;
 		
 	private float bWidth = 250;
-	private float bHeight = 100;
+	private float bHeight = 75;
 	
 private bool showStartMenu = true;
 	
@@ -43,24 +43,31 @@ private bool showStartMenu = true;
 		GUI.Label(new Rect(150,5,350,70),"Flamboyant",titleStyle);
 		GUI.Label(new Rect(160,90,350,70),"Battle Boy",titleStyle);
 		
-		if (GUI.Button(new Rect(275, 230, bWidth, bHeight), "", buttonStyle)) {
+		if (GUI.Button(new Rect(250, 215, bWidth, bHeight), "", buttonStyle)) {
 			StartClicked();
 		}
-		GUI.Label(new Rect(325,235,bWidth,bHeight),"Start",buttonTextShaddowStyle);
-		GUI.Label(new Rect(321,231,bWidth,bHeight),"Start",buttonTextStyle);
+		GUI.Label(new Rect(326,209,bWidth,bHeight),"Start",buttonTextShaddowStyle);
+		GUI.Label(new Rect(321,204,bWidth,bHeight),"Start",buttonTextStyle);
 		
-		if (GUI.Button(new Rect(275, 340, bWidth, bHeight), "", buttonStyle)) {
-			QuitClicked();
+		if (GUI.Button(new Rect(250, 300, bWidth, bHeight), "", buttonStyle)) {
+			TutorialClicked ();
 		}
-		GUI.Label(new Rect(345,345,bWidth,bHeight),"Quit",buttonTextShaddowStyle);
-		GUI.Label(new Rect(341,341,bWidth,bHeight),"Quit",buttonTextStyle);
+		GUI.Label(new Rect(281,295,bWidth,bHeight),"Tutorial",buttonTextShaddowStyle);
+		GUI.Label(new Rect(276,290,bWidth,bHeight),"Tutorial",buttonTextStyle);
 		
-		if (GUI.Button(new Rect(275, 450, bWidth, bHeight), "", buttonStyle)) {
+		
+		if (GUI.Button(new Rect(250, 385, bWidth, bHeight), "", buttonStyle)) {
 			CreditsClicked();
 		}
-		GUI.Label(new Rect(295,455,bWidth,bHeight),"Credits",buttonTextShaddowStyle);
-		GUI.Label(new Rect(291,451,bWidth,bHeight),"Credits",buttonTextStyle);
+		GUI.Label(new Rect(296,385,bWidth,bHeight),"Credits",buttonTextShaddowStyle);
+		GUI.Label(new Rect(291,380,bWidth,bHeight),"Credits",buttonTextStyle);
 		
+		
+		if (GUI.Button(new Rect(250, 470, bWidth, bHeight), "", buttonStyle)) {
+			QuitClicked();
+		}
+		GUI.Label(new Rect(346,465,bWidth,bHeight),"Quit",buttonTextShaddowStyle);
+		GUI.Label(new Rect(341,460,bWidth,bHeight),"Quit",buttonTextStyle);
 	}
 	
 	private void StartClicked() {
@@ -77,7 +84,11 @@ private bool showStartMenu = true;
 	private void CreditsClicked() {
 		//Start Credits
 		GameManager.TriggerCreditsStart();
+		
 	}
 	
-
+	private void TutorialClicked() {
+		//Start Credits
+		GameManager.TriggerTutorialStart();
+	}
 }

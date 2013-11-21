@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Credits : MonoBehaviour {
+public class Tutorial : MonoBehaviour {
 	
 	public GUIStyle buttonStyle;
 	public GUIStyle bTextStyle;
@@ -19,11 +19,11 @@ public class Credits : MonoBehaviour {
 	
 	void OnGUI() {
 		
-		if (GUI.Button (new Rect (340, 510, 180, 75), "", buttonStyle)) {
+		if (GUI.Button (new Rect (20, 510, 220, 75), "", buttonStyle)) {
 			GameManager.TriggerMainOpen();
 		}
 		
-		GUI.Label(new Rect(355,522,225,75), "Back",bTextShaddowStyle);
-		GUI.Label(new Rect(355,522,225,75), "Back",bTextStyle);
+		GUI.Label(new Rect(58,520,225,75), "Back",bTextShaddowStyle);
+		GUI.Label(new Rect(58,520,225,75), "Back",bTextStyle);
 	}
 }
