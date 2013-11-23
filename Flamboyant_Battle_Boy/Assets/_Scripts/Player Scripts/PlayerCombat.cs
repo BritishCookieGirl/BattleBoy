@@ -20,6 +20,7 @@ public class PlayerCombat : MonoBehaviour
     private OTAnimatingSprite liftAnimation;
     private OTAnimatingSprite idleAnimation;
     private OTAnimatingSprite jumpAnimation;
+    private OTAnimatingSprite landAnimation;
     private bool isRunPlaying = false;
     private bool isAttackPlaying = false;
 
@@ -46,6 +47,9 @@ public class PlayerCombat : MonoBehaviour
         idleAnimation.visible = true;
         jumpAnimation = OT.ObjectByName("PlayerJumpAnimSprite") as OTAnimatingSprite;
         jumpAnimation.visible = false;
+        //jumpAnimation.onAnimationFinish = OnAnimationFinish;
+        landAnimation = OT.ObjectByName("PlayerLandAnimSprite") as OTAnimatingSprite;
+        landAnimation.visible = false;
 
         AttackBox.SetActive(false);
         attackStartTime = 0f;
@@ -174,11 +178,13 @@ public class PlayerCombat : MonoBehaviour
             runAnimation.visible = false;
             idleAnimation.Stop();
             idleAnimation.visible = false;
+            landAnimation.Stop();
+            landAnimation.visible = false;
         }
         else
         {
             //Debug.Log("jumping");
-            isJumping = true;
+            IsJumping = true;
             jumpAnimation.visible = true;
 
             IsMoving = false;
@@ -192,18 +198,31 @@ public class PlayerCombat : MonoBehaviour
             runAnimation.visible = false;
             idleAnimation.Stop();
             idleAnimation.visible = false;
+            landAnimation.Stop();
+            landAnimation.visible = false;
         }
     }
 
     private CharacterController controller;
 
+    bool justLanded = false;
     private void HandleAnimations()
     {
         if (controller.isGrounded)
         {
+            //Debug.Log("IsJumping = " + IsJumping);
             jumpAnimation.Stop();
             jumpAnimation.visible = false;
-            isJumping = false;
+
+            if (IsJumping)
+            {
+                //Debug.Log("Playing landAnimation");
+                //landAnimation.visible = true;
+                //landAnimation.PlayOnce("Land");
+                //landAnimation.Play();
+            }
+
+            IsJumping = false;
         }
 
         //make it run
@@ -216,6 +235,8 @@ public class PlayerCombat : MonoBehaviour
             idleAnimation.visible = false;
             jumpAnimation.Stop();
             jumpAnimation.visible = false;
+            landAnimation.Stop();
+            landAnimation.visible = false;
         }
         //make it idle
         if (!IsMoving && !isAttackPlaying && !IsJumping) //is not moving and not attacking
@@ -227,6 +248,8 @@ public class PlayerCombat : MonoBehaviour
             idleAnimation.Play();
             jumpAnimation.Stop();
             jumpAnimation.visible = false;
+            landAnimation.Stop();
+            landAnimation.visible = false;
         }
     }
 
@@ -255,6 +278,8 @@ public class PlayerCombat : MonoBehaviour
         else
             jumpAnimation.Stop();
         jumpAnimation.visible = false;
+        landAnimation.Stop();
+        landAnimation.visible = false;
     }
 
     public void OnAnimationStart(OTObject owner)

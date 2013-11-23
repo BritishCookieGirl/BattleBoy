@@ -552,8 +552,8 @@ public class PlatformerControllerJumping
     // We add extraHeight units (meters) on top when holding the button down longer while jumping
     public float extraHeight = 4.1f;
 
-    public float doubleJumpHeight = 2.5f;
-    public float tripleJumpHeight = 2.5f;
+    public float doubleJumpHeight = 3.5f;
+    public float tripleJumpHeight = 3.5f;
 
     // This prevents inordinarily too quick jumping
     // The next line, @System.NonSerialized , tells Unity to not serialize the variable or show it in the inspector view.  Very handy for organization!

@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		bonusTime = 30;
+		bonusTime = 60;
 		levelRunning = false;
 		victory = false;
 		bonusEndTime = bonusTime;

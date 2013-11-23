@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     private string currentTrack = "";
     private bool soundRunning = true;
     private bool interrupted = false;
-    private float fadeLength = 1.0f;
+    private float fadeLength = .9f;
 
     private Dictionary<string, string> bgmDict = new Dictionary<string, string>(){
         {"MainIntro", "FBB - Intro"},
@@ -50,6 +50,8 @@ public class AudioManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        ScoreManager.MasterThresholdReached += ChangeBGM;
+
         AudioListener.volume = volume;
         source = this.gameObject.AddComponent<AudioSource>();
         bgmSource1 = this.gameObject.AddComponent<AudioSource>();
@@ -61,9 +63,21 @@ public class AudioManager : MonoBehaviour
         StartInterrupt("MainIntro");
 	}
 
-    public void ChangeBGM(string changeTo)
+    private int currentBGMLevel = 1;
+
+    public void ChangeBGM(int masterLevel)
     {
-        StartInterrupt(changeTo);
+        Debug.Log("In ChangeBGM " + masterLevel);
+        if (masterLevel > currentBGMLevel)
+        {
+            switch (masterLevel)
+            {
+                case 2: StartInterrupt("Loop1Ramp"); currentBGMLevel = masterLevel; break;
+                case 3: StartInterrupt("Loop2"); currentBGMLevel = masterLevel; break;
+                case 4: StartInterrupt("Loop3Intro"); currentBGMLevel = masterLevel; break;
+                default: break;
+            }
+        }
     }
 
     private IEnumerator StartIntro(AudioClip intro, string mainPart)
@@ -78,6 +92,7 @@ public class AudioManager : MonoBehaviour
         {
             //Debug.Log("switching to source 2");
             bgmSource1.audio.Stop();
+            bgmSource2.audio.Stop();
             bgmSource2.loop = true;
             bgmSource2.clip = mainLoop;
             bgmSource2.Play();
@@ -87,14 +102,16 @@ public class AudioManager : MonoBehaviour
         {
             //Debug.Log("switching to source 1");
             bgmSource2.audio.Stop();
+            bgmSource1.audio.Stop();
             bgmSource1.loop = true;
             bgmSource1.clip = mainLoop;
             bgmSource1.Play();
             currentSourceActive = 1;
         }
         //Debug.Log("waiting for end of bgm");
-        yield return new WaitForSeconds(mainLoop.length - fadeLength);
+        //yield return new WaitForSeconds(mainLoop.length - fadeLength);
         interrupted = false;
+        //Debug.Log("Interrupted = " + interrupted);
     }
 
     private void StartInterrupt(string changeTo)
@@ -124,6 +141,7 @@ public class AudioManager : MonoBehaviour
             if (currentSourceActive == 1)
             {
                 //Debug.Log("Playing " + with.name);
+                bgmSource1.audio.Stop();
                 bgmSource2.clip = with;
                 bgmSource2.loop = false;
                 bgmSource2.Play();
@@ -132,6 +150,7 @@ public class AudioManager : MonoBehaviour
             else
             {
                 //Debug.Log("Playing " + with.name);
+                bgmSource2.audio.Stop();
                 bgmSource1.clip = with;
                 bgmSource1.loop = false;
                 bgmSource1.Play();
@@ -147,6 +166,7 @@ public class AudioManager : MonoBehaviour
                 if (currentSourceActive == 1)
                 {
                     //Debug.Log("Playing " + with.name);
+                    bgmSource1.audio.Stop();
                     bgmSource2.clip = with;
                     bgmSource2.loop = false;
                     bgmSource2.Play();
@@ -155,6 +175,7 @@ public class AudioManager : MonoBehaviour
                 else
                 {
                     //Debug.Log("Playing " + with.name);
+                    bgmSource2.audio.Stop();
                     bgmSource1.clip = with;
                     bgmSource2.loop = false;
                     bgmSource1.Play();
@@ -165,28 +186,33 @@ public class AudioManager : MonoBehaviour
                 StartCoroutine(StartIntro(with, changeTo.Substring(0, changeTo.IndexOf("Intro"))));
             }
 
-            else
+            else //Not intro or ramp-up
             {
                 if (currentSourceActive == 1)
                 {
                     //Debug.Log("Playing " + with.name);
+                    bgmSource1.audio.Stop();
                     bgmSource2.clip = with;
                     bgmSource2.loop = true;
                     bgmSource2.Play();
-                    StartCoroutine(Crossfade(bgmSource2.audio, bgmSource1.audio, 1.0f));
+                    //StartCoroutine(Crossfade(bgmSource2.audio, bgmSource1.audio, 0.5f));
                     currentSourceActive = 2;
+                    //bgmSource1.audio.Stop();
                 }
                 else
                 {
                     //Debug.Log("Playing " + with.name);
+                    bgmSource2.audio.Stop();
                     bgmSource1.clip = with;
                     bgmSource2.loop = true;
                     bgmSource1.Play();
-                    StartCoroutine(Crossfade(bgmSource1.audio, bgmSource2.audio, 1.0f));
+                    //StartCoroutine(Crossfade(bgmSource1.audio, bgmSource2.audio, 0.5f));
                     currentSourceActive = 1;
+                    //bgmSource2.audio.Stop();
                 }
 
-                float waitFor = with.length - 2.0f;
+                //float waitFor = with.length - 2.0f;
+                float waitFor = 2.0f;
                 StartCoroutine(Interrupt(waitFor)); //prevents new interrupt from happening until end of clip
             }
         }
@@ -209,23 +235,28 @@ public class AudioManager : MonoBehaviour
         interrupted = false;
 
         if (currentSourceActive == 1)
-            bgmSource1.Stop();
-        else
             bgmSource2.Stop();
+        else
+            bgmSource1.Stop();
     }
 
     private IEnumerator Crossfade(AudioSource up, AudioSource down, float duration)
     {
         float vol = 0.0f;
-        while (vol < 1.0)
+        float timeElapsed = 0.0f;
+        while (vol < 1.0 && timeElapsed < duration)
         {
+            //Debug.Log("time elapsed = " + timeElapsed);
+            //Debug.Log("Time.deltaTime / duration = " + Time.deltaTime / duration);
             vol += Time.deltaTime / duration;
-            up.volume = vol;
-            down.volume = 1.0f - vol;
+            up.audio.volume = vol;
+            down.audio.volume = 1.0f - vol;
+            timeElapsed += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
         up.volume = 1.0f;
         down.volume = 0.0f;
+        down.Stop();
     }
 
     public void PlaySoundEffect(string effectName)
