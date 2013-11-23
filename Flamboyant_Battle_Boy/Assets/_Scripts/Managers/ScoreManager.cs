@@ -104,7 +104,6 @@ public static class ScoreManager {
 	}
 	
 	private static void StoreOpen() {
-		totalScore += 10000;
 		UpdateScore(totalScore);
 	}
 }

@@ -33,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
             case "Lift": dest = liftEnd; break;
             case "Smash": dest = smashEnd; break;
             case "Neutral": dest = neutralEnd; break;
-            case "Special": dest = neutralEnd; break;
+            case "Special1": dest = neutralEnd; break;
             default: dest = Vector3.zero; break;
         }
 
@@ -86,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
                 case "Lift": force = new Vector3(5f, 25f, 0f); attackStrength = 2; break;
                 case "Smash": force = new Vector3(5f, -15f, 0f); attackStrength = 2; break;
                 case "Neutral": force = new Vector3(5f, 5f, 0f); attackStrength = 2; break;
-                case "Special": force = new Vector3(4f, 2f, 0f); attackStrength = 9; break;
+                case "Special1": force = new Vector3(4f, 2f, 0f); attackStrength = 9; break;
                 default: force = Vector3.zero; attackStrength = 0; break;
             }
 
